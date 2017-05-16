@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   acts_as_paranoid
-  belongs_to :organisation, optional: true
+  has_many :organisations
+  has_and_belongs_to_many :jobs, association_foreign_key: "collaborator_id", :join_table => :jobs_collaborators
   before_save { self.email = email.downcase }
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
   validates :email, presence: true

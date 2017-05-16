@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   #end
   root to: "organisations#index"
   resources :organisations do
-    resources :jobs, only: [:show, :index, :create, :new, :update, :edit, :destroy] do
+    resources :jobs do
       resources :applications, only: [:show, :index, :create, :new]
     end
   end
