@@ -1,6 +1,7 @@
 class ApplicationsController < ApplicationController
   before_action :authenticate_user!, only: [:show, :index]
-  before_action :set_job, only: [:index, :create, :new]
+  before_action :set_organisation
+  before_action :set_job
   before_action :set_application, only: [:show]
   before_action :require_collaborators, only: [:show, :index]
 
@@ -8,7 +9,7 @@ class ApplicationsController < ApplicationController
   end
 
   def index
-    @applications = @job.all
+    @applications = @job.applications
   end
 
   def new
@@ -21,13 +22,17 @@ class ApplicationsController < ApplicationController
 
     if @application.save
       flash[:success] = "Application Created!"
-      redirect_to job_path(@job)
+      redirect_to organisation_job_path(@organisation, @job)
     else
       render :new
     end
   end
 
   private
+
+  def set_organisation
+    @organisation = Organisation.find(params[:organisation_id])
+  end
 
   def set_application
     @application = Application.find(params[:id])
@@ -38,9 +43,9 @@ class ApplicationsController < ApplicationController
   end
 
   def require_collaborators
-    if @job.collaborators.include?(current_user)
+    if !@job.collaborators.include?(current_user)
       flash[:danger] = 'You can only edit jobs you collaborate on'
-      redirect_to organisation_jobs_path(@organisation)
+      redirect_to organisation_job_path(@organisation, @job)
     end
   end
 

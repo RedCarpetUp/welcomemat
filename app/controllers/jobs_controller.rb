@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_organisation, only: [:show, :index, :create, :new, :destroy]
+  before_action :set_organisation, only: [:edit, :update, :show, :index, :create, :new, :destroy]
   before_action :set_job, only: [:show, :edit, :update, :destroy]
   before_action :require_owner, only: [:new, :create]
   before_action :require_collaborator, only: [:edit, :update, :destroy]
@@ -9,7 +9,7 @@ class JobsController < ApplicationController
   end
 
   def index
-    @jobs = @organisation.jobs.all
+    @jobs = @organisation.jobs
   end
 
   def new
@@ -19,11 +19,12 @@ class JobsController < ApplicationController
   def create
     @job = Job.new(job_params)
     @job.organisation = @organisation
+    @job.unique_key = "xxxxxxxxxxxx"
     @job.collaborators << current_user
 
     if @job.save
       flash[:success] = "Job Created!"
-      redirect_to job_path(@job)
+      redirect_to organisation_job_path(@organisation, @job)
     else
       render :new
     end
@@ -35,7 +36,7 @@ class JobsController < ApplicationController
   def update
     if @job.update(job_params)
       flash[:success] = 'Updated Successfully!'
-      redirect_to job_path(@job)
+      redirect_to organisation_job_path(@organisation, @job)
     else
       render :edit
     end
@@ -57,8 +58,8 @@ class JobsController < ApplicationController
     @organisation = Organisation.find(params[:organisation_id])
   end
 
-  def require_collaborators
-    if @job.collaborators.include?(current_user)
+  def require_collaborator
+    if !@job.collaborators.include?(current_user)
       flash[:danger] = 'You can only edit jobs you collaborate on'
       redirect_to organisation_jobs_path(@organisation)
     end

@@ -1,0 +1,6 @@
+<h2><%= @organisation.name %></h2>
+<p><%= @organisation.description %></p>
+<%= link_to 'Show jobs', organisation_jobs_path(@organisation) %></br>
+
+<%= link_to 'Edit', edit_organisation_path(@organisation) %> |
+<%= link_to 'Back', organisations_path %>

@@ -1,0 +1,7 @@
+<h2><%= @job.name %></h2>
+<h3><%= @organisation.name %></h3>
+<p><%= @job.description %></p>
+<%= link_to 'Show applications', organisation_job_applications_path(@organisation, @job) %></br>
+
+<%= link_to 'Edit', edit_organisation_job_path(@organisation, @job) %> |
+<%= link_to 'Back', organisation_jobs_path %>
