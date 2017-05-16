@@ -50,7 +50,7 @@ class ApplicationsController < ApplicationController
   end
 
   def application_params
-    params.require(:application).permit(:name, :description)
+    params.require(:application).permit(:name, :email, :description)
   end
 
 end
