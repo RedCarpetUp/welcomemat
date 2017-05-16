@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     resources :jobs, only: [:show, :index] do
       resources :applications, only: [:new, :create]
     end
+    get 'dashboard', to: 'dashboard#index'
+    get 'dashboard/*other', to: 'dashboard#index'
   end
+
 
 end
