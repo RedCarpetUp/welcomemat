@@ -1,5 +1,6 @@
 class Application < ActiveRecord::Base
   acts_as_paranoid
+  include Hashid::Rails
   belongs_to :job
   has_many :applicant_messages
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
