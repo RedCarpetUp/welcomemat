@@ -12,7 +12,7 @@ class ApplicantMessagesController < ApplicationController
     @applicant_message.from_applicant = false
 
     if @applicant_message.save
-      ApplicantMailer.message_email(@job, @application, @applicant_message.content).deliver
+      ApplicantMailer.message_email(@job, @application, @applicant_message.content).deliver_later
       flash[:success] = "Message Sent!"
     else
       flash[:success] = "Message Sending failed!"
