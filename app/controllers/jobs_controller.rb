@@ -19,7 +19,6 @@ class JobsController < ApplicationController
   def create
     @job = Job.new(job_params)
     @job.organisation = @organisation
-    @job.unique_key = "xxxxxxxxxxxx"
     @job.collaborators << current_user
 
     if @job.save

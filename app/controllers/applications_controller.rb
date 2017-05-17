@@ -21,6 +21,7 @@ class ApplicationsController < ApplicationController
   def create
     @application = Application.new(application_params)
     @application.job = @job
+    @application.unique_key = "xxxxxxxxxxxx"
 
     if @application.save
       flash[:success] = "Application Created!"
