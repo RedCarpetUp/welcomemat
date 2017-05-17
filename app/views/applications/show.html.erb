@@ -3,3 +3,30 @@
 <h3><%= @application.name %></h3>
 <p><%= @application.email %></p>
 <p><%= @application.description %></p>
+
+<h5>Conversation</h5>
+<% @applicant_messages.each do |msg| %>
+	<p><%= msg.content %></p>
+<% end %>
+
+<h5>Send a message</h5>
+
+<%= form_with(url: organisation_job_application_applicant_messages_path(@organisation, @job, @application), model: @applicant_message, local: true) do |form| %>
+  <% if @applicant_message.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@applicant_message.errors.count, "error") %> prohibited this message from being sent:</h2>
+
+      <ul>
+      <% @applicant_message.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.text_area :content %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

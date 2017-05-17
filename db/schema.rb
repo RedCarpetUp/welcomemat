@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170516171651) do
+ActiveRecord::Schema.define(version: 20170516224633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applicant_messages", force: :cascade do |t|
+    t.text "content"
+    t.boolean "from_applicant"
+    t.integer "application_id"
+    t.datetime "deleted_at"
+    t.integer "user_id"
+    t.index ["deleted_at"], name: "index_applicant_messages_on_deleted_at"
+  end
 
   create_table "applications", force: :cascade do |t|
     t.text "description"
@@ -23,13 +32,13 @@ ActiveRecord::Schema.define(version: 20170516171651) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.string "email"
+    t.string "unique_key"
     t.index ["deleted_at"], name: "index_applications_on_deleted_at"
   end
 
   create_table "jobs", force: :cascade do |t|
     t.text "description"
     t.string "name"
-    t.string "unique_key"
     t.integer "organisation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

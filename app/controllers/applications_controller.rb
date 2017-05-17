@@ -6,6 +6,8 @@ class ApplicationsController < ApplicationController
   before_action :require_collaborators, only: [:show, :index]
 
   def show
+    @applicant_messages = @application.applicant_messages
+    @applicant_message = ApplicantMessage.new
   end
 
   def index

@@ -45,6 +45,7 @@ module Api
       def create
         @application = Application.new(application_params)
         @application.job = @job
+        @application.unique_key = "xxxxxxxxxxx"
 
         if @application.save
           render json: @application.as_json(:except => [:deleted_at])

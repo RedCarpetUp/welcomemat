@@ -44,7 +44,6 @@ module Api
       def create
         @job = Job.new(job_params)
         @job.organisation = @organisation
-        @job.unique_key = "xxxxxxxxxxx"
 
         if @job.save
           render json: @job.as_json(:except => [:deleted_at])

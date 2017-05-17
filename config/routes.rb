@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   root to: "organisations#index"
   resources :organisations do
     resources :jobs do
-      resources :applications, only: [:show, :index, :create, :new]
+      resources :applications, only: [:show, :index, :create, :new] do
+        resources :applicant_messages, only: [:create]
+      end
     end
   end
 
