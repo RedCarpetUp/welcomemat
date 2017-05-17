@@ -24,6 +24,9 @@ class ApplicationsController < ApplicationController
     @application.unique_key = "xxxxxxxxxxxx"
 
     if @application.save
+      @job.collaborators.each do |coll|
+        ApplicantMailer.recruiter_notify(coll, @job, @application).deliver_later
+      end
       flash[:success] = "Application Created!"
       redirect_to organisation_job_path(@organisation, @job)
     else
