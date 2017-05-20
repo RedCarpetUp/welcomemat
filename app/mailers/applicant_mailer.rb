@@ -12,7 +12,7 @@ class ApplicantMailer < ActionMailer::Base
   	@job = job
   	@coll = coll
   	@application = application
-  	@reply_mail = "careers@"+"welcomeat.hackergully.com"
+  	@reply_mail = "careers-"+@application.hashid+"@"+"welcomeat.hackergully.com"
   	mail(from: @reply_mail, to: @coll.email, subject: 'New application to your job '+@job.name)
   end
 
