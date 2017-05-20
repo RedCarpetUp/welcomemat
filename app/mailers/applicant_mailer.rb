@@ -4,7 +4,7 @@ class ApplicantMailer < ActionMailer::Base
     @job = job
     @applicant  = applicant
     @message = applicant_message
-    @reply_mail = "careers-"+@applicant.hashid+"@"+"welcomeat.hackergully.com"
+    @reply_mail = "careers-"+@applicant.hashid+"@"+"wm-mail.hackergully.com"
     mail(from: @reply_mail, to: @applicant.email, subject: 'New message regarding your job application')
   end
 
@@ -12,7 +12,7 @@ class ApplicantMailer < ActionMailer::Base
   	@job = job
   	@coll = coll
   	@application = application
-  	@reply_mail = "careers-"+@application.hashid+"@"+"welcomeat.hackergully.com"
+  	@reply_mail = "careers-"+@application.hashid+"@"+"wm-mail.hackergully.com"
   	mail(from: @reply_mail, to: @coll.email, subject: 'New application to your job '+@job.name)
   end
 
