@@ -1,8 +1,8 @@
 class EmailinController < ApplicationController
 
 	def index
-		p "XXXXX"
-		p params
+		logger.debug "XXXXX"
+		logger.debug params
 	end
 
 end
