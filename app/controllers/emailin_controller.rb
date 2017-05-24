@@ -27,6 +27,7 @@ class EmailinController < ApplicationController
           applicant_message = ApplicantMessage.new
           applicant_message.content = content
           applicant_message.application = application
+          applicant_message.user = sender_user
           applicant_message.from_applicant = nil
           if applicant_message.save
             application.job.collaborators.each do |coll|
@@ -43,6 +44,7 @@ class EmailinController < ApplicationController
           applicant_message = ApplicantMessage.new
           applicant_message.content = content
           applicant_message.application = application
+          applicant_message.user = sender_user
           applicant_message.from_applicant = false
           if applicant_message.save
             ApplicantMailer.message_email(application.job, application, applicant_message.content).deliver_later
