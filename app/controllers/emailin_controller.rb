@@ -20,7 +20,6 @@ class EmailinController < ApplicationController
             end
           end
         end
-      end
       elsif section == "collaborators"
         application = Application.find(unique_key)
         sender_user = User.where(email: sender).first
@@ -37,7 +36,6 @@ class EmailinController < ApplicationController
             end
           end
         end
-      end
       elsif section == "applicant"
         application = Application.find(unique_key)
         sender_user = User.where(email: sender).first
