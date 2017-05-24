@@ -23,6 +23,8 @@ Rails.application.routes.draw do
     resources :jobs do
       resources :applications, only: [:show, :index, :create, :new] do
         resources :applicant_messages, only: [:create]
+        post '/applicant_messages/to_applicant', to: 'applicant_messages#create_to_applicant', as: 'applicant_messages_to_applicant'
+        post '/applicant_messages/to_collaborators', to: 'applicant_messages#create_to_collaborators', as: 'applicant_messages_to_collaborators'
       end
     end
   end

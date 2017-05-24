@@ -1,0 +1,7 @@
+You have a message regarding job <%= @job.name %> for <%= @job.organisation.name %>:
+
+A new message has been sent by <%= @sender %> to <%= @sent_to == "collabs" ? "all collaborators:": "the applicant:" %>
+
+<%= @message %>
+
+You can reply to this email directly at <%= @reply_mail %> to send a message to other collaborators.

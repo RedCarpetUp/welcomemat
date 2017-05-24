@@ -3,5 +3,4 @@ class ApplicantMessage < ActiveRecord::Base
   belongs_to :user, optional: true
   belongs_to :application
   validates :content, presence: true, length: { minimum: 5, maximum: 400 }
-  validates_inclusion_of :from_applicant, :in => [true, false]
 end
