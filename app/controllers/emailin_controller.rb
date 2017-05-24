@@ -31,7 +31,7 @@ class EmailinController < ApplicationController
           if applicant_message.save
             application.job.collaborators.each do |coll|
               if sender_user != coll
-                ApplicantMailer.collab_message_email(application.job, application, coll, applicant_message.user.name, applicant_message.content, application_message.from_applicant).deliver_later
+                ApplicantMailer.collab_message_email(application.job, application, coll, applicant_message.user.name, applicant_message.content, applicant_message.from_applicant).deliver_later
               end
             end
           end
@@ -48,7 +48,7 @@ class EmailinController < ApplicationController
             ApplicantMailer.message_email(application.job, application, applicant_message.content).deliver_later
             application.job.collaborators.each do |coll|
               if sender_user != coll
-                ApplicantMailer.collab_message_email(application.job, application, coll, applicant_message.user.name, applicant_message.content, application_message.from_applicant).deliver_later
+                ApplicantMailer.collab_message_email(application.job, application, coll, applicant_message.user.name, applicant_message.content, applicant_message.from_applicant).deliver_later
               end
             end
           end

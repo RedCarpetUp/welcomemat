@@ -15,7 +15,7 @@ class ApplicantMessagesController < ApplicationController
       ApplicantMailer.message_email(@job, @application, @applicant_message.content).deliver_later
       @job.collaborators.each do |coll|
         if current_user != coll
-          ApplicantMailer.collab_message_email(@job, @application, coll, @applicant_message.user.name, @applicant_message.content, @application_message.from_applicant).deliver_later
+          ApplicantMailer.collab_message_email(@job, @application, coll, @applicant_message.user.name, @applicant_message.content, @applicant_message.from_applicant).deliver_later
         end
       end
       flash[:success] = "Message Sent!"
@@ -35,7 +35,7 @@ class ApplicantMessagesController < ApplicationController
       #ApplicantMailer.message_email(@job, @application, @applicant_message.content).deliver_later
       @job.collaborators.each do |coll|
         if current_user != coll
-          ApplicantMailer.collab_message_email(@job, @application, coll, @applicant_message.user.name, @applicant_message.content, @application_message.from_applicant).deliver_later
+          ApplicantMailer.collab_message_email(@job, @application, coll, @applicant_message.user.name, @applicant_message.content, @applicant_message.from_applicant).deliver_later
         end
       end
       flash[:success] = "Message Sent!"
