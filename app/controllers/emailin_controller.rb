@@ -7,20 +7,7 @@ class EmailinController < ApplicationController
       unique_key = params[:recipient].split("@")[0].split("-")[1]
       sender = params[:sender]
       content = params[:"stripped-text"]
-      if section == "careers"
-        application = Application.find(unique_key)
-        if application.email == sender
-          applicant_message = ApplicantMessage.new
-          applicant_message.content = content
-          applicant_message.application = application
-          applicant_message.from_applicant = true
-          if applicant_message.save
-            application.job.collaborators.each do |coll|
-              ApplicantMailer.recruiter_message_notify(coll, application.job, application, applicant_message).deliver_later
-            end
-          end
-        end
-      elsif section == "collaborators"
+      if section == "collaborators"
         application = Application.find(unique_key)
         sender_user = User.where(email: sender).first
         if application.job.collaborators.include?(sender_user)
@@ -55,7 +42,17 @@ class EmailinController < ApplicationController
             end
           end
         end
-      end
+        elsif application.email == sender
+          applicant_message = ApplicantMessage.new
+          applicant_message.content = content
+          applicant_message.application = application
+          applicant_message.from_applicant = true
+          if applicant_message.save
+            application.job.collaborators.each do |coll|
+              ApplicantMailer.recruiter_message_notify(coll, application.job, application, applicant_message).deliver_later
+            end
+          end
+        end
     end
   end
 
