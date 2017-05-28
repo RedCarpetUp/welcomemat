@@ -6,7 +6,7 @@
 
 <h5>Conversation</h5>
 <% @applicant_messages.each do |msg| %>
-	<p><%= msg.content %></p>
+	<p><%= msg.content.html_safe %></p>
 <% end %>
 
 <h5>Send a message</h5>
@@ -25,7 +25,8 @@
     </div>
   <% end %>
 
-  <%= form.text_area :content %>
+  <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
+  <trix-editor input="application_messages_appl_content_box"></trix-editor>
 
   <div class="actions">
     <%= form.submit %>
@@ -46,7 +47,8 @@
     </div>
   <% end %>
 
-  <%= form.text_area :content %>
+  <%= form.hidden_field :content, :id => "application_messages_coll_content_box" %>
+  <trix-editor input="application_messages_coll_content_box"></trix-editor>
 
   <div class="actions">
     <%= form.submit %>

@@ -87,6 +87,7 @@ GEM
       activesupport (>= 3.0.0)
       multi_json (>= 1.2)
     json (2.1.0)
+    liquid (4.0.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -227,6 +228,7 @@ DEPENDENCIES
   devise
   hashid-rails
   jbuilder (~> 2.5)
+  liquid
   listen (>= 3.0.5, < 3.2)
   mailgun_rails
   paranoia (~> 2.2)
