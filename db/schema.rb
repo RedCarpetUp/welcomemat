@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170517142744) do
+ActiveRecord::Schema.define(version: 20170602224647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,14 @@ ActiveRecord::Schema.define(version: 20170517142744) do
     t.datetime "deleted_at"
     t.integer "owner_id"
     t.index ["deleted_at"], name: "index_organisations_on_deleted_at"
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.text "content"
+    t.boolean "organisation_id"
+    t.datetime "deleted_at"
+    t.string "name"
+    t.index ["deleted_at"], name: "index_templates_on_deleted_at"
   end
 
   create_table "users", force: :cascade do |t|

@@ -6,7 +6,7 @@
 
 <h5>Conversation</h5>
 <% @applicant_messages.each do |msg| %>
-	<p><%= msg.content.html_safe %></p>
+	<div class="trix-content"><%= msg.content.html_safe %></div>
 <% end %>
 
 <h5>Send a message</h5>
@@ -26,10 +26,16 @@
   <% end %>
 
   <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
-  <trix-editor input="application_messages_appl_content_box"></trix-editor>
+  <trix-editor input="application_messages_appl_content_box" id="application_messages_appl_content_box_editor"></trix-editor>
 
   <div class="actions">
     <%= form.submit %>
+    <select onchange="fill_applicant_message_box(this.value)">
+      <option value="None">None</option>
+      <% @organisation.templates.each do |template| %>
+        <option value=<%= template.name %>><%= template.name %></option>
+      <% end %>
+    </select>
   </div>
 <% end %>
 
@@ -48,9 +54,46 @@
   <% end %>
 
   <%= form.hidden_field :content, :id => "application_messages_coll_content_box" %>
-  <trix-editor input="application_messages_coll_content_box"></trix-editor>
+  <trix-editor input="application_messages_coll_content_box" id="application_messages_coll_content_box_editor"></trix-editor>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<h6>Save a template</h6>
+<%= form_with(url: organisation_job_application_templates_path(@organisation, @job, @application), model: @template, local: true) do |form| %>
+  <% if @template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@template.errors.count, "error") %> prohibited this template from being saved:</h2>
+
+      <ul>
+      <% @template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.label :name %><br />
+  <%= form.text_field :name %>
+
+  <%= form.hidden_field :content, :id => "template_content_box" %>
+  <trix-editor input="template_content_box" id="template_content_box_editor"></trix-editor>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<script>
+function fill_applicant_message_box(value) {
+  var templates_mapping = {
+    <% @organisation.templates.each do |template| %>
+      "<%= template.name %>": "<%= template.content.html_safe %>",
+    <% end %>
+    "None":""
+  }
+  document.getElementById("application_messages_appl_content_box_editor").editor.loadHTML(templates_mapping[value]);
+}
+</script>

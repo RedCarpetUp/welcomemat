@@ -8,6 +8,7 @@ class ApplicationsController < ApplicationController
   def show
     @applicant_messages = @application.applicant_messages
     @applicant_message = ApplicantMessage.new
+    @template = Template.new
   end
 
   def index

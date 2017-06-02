@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         resources :applicant_messages, only: [:create]
         post '/applicant_messages/to_applicant', to: 'applicant_messages#create_to_applicant', as: 'applicant_messages_to_applicant'
         post '/applicant_messages/to_collaborators', to: 'applicant_messages#create_to_collaborators', as: 'applicant_messages_to_collaborators'
+        resources :templates, only: [:create]
       end
     end
   end
