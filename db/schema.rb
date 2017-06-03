@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170603110332) do
+ActiveRecord::Schema.define(version: 20170603190009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20170603110332) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.string "email"
-    t.jsonb "extra_fields", default: "{}"
+    t.jsonb "extra_fields", default: {}
     t.index ["deleted_at"], name: "index_applications_on_deleted_at"
   end
 
