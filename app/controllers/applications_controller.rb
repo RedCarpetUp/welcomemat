@@ -23,6 +23,10 @@ class ApplicationsController < ApplicationController
     @application = Application.new(application_params)
     @application.job = @job
 
+    if params[:application].slice(*@job.fields).keys.length > 0
+      @application.extra_fields = params[:application].slice(*@job.fields).permit!.to_hash
+    end
+
     if @application.save
       @job.collaborators.each do |coll|
         ApplicantMailer.recruiter_notify(coll, @job, @application).deliver_later

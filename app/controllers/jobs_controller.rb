@@ -72,7 +72,8 @@ class JobsController < ApplicationController
   end
 
   def job_params
-    params.require(:job).permit(:name, :description)
+    params.require(:job).permit(:name, :description, :fields_required)
+    #params.require(:job).permit(:name, :description, :fields).except(:fields).merge(:fields => params["job"]["fields"].split(",").map { |s| s })
   end
 
 end

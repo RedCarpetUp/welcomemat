@@ -20,6 +20,12 @@
   <%= form.label :description %><br />
   <%= form.text_area :description %>
 
+  <% @job.fields.each do |field| %>
+    <br />
+    <%= form.label field %><br />
+    <%= form.text_area field, :value => application.extra_fields[field] %>
+  <% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>
