@@ -4,7 +4,7 @@
 <p><%= @application.email %></p>
 <p><%= @application.description %></p>
 <% @application.extra_fields.keys.each do |keyval| %>
-  <p><span style="font-weight: 600;"><%= keyval+":" %></span><%= keyval+":"+@application.extra_fields[keyval] %></p>
+  <p><span style="font-weight: 600;"><%= keyval+": " %></span><%= @application.extra_fields[keyval] %></p>
 <% end %>
 
 
