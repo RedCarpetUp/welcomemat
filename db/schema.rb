@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170603190009) do
+ActiveRecord::Schema.define(version: 20170608214402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20170603190009) do
     t.integer "application_id"
     t.datetime "deleted_at"
     t.integer "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["deleted_at"], name: "index_applicant_messages_on_deleted_at"
   end
 
@@ -67,6 +69,8 @@ ActiveRecord::Schema.define(version: 20170603190009) do
     t.datetime "deleted_at"
     t.string "name"
     t.integer "organisation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["deleted_at"], name: "index_templates_on_deleted_at"
   end
 
@@ -83,6 +87,8 @@ ActiveRecord::Schema.define(version: 20170603190009) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

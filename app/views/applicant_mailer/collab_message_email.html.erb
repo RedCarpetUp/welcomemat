@@ -1,7 +1,16 @@
-You have a message regarding job <%= @job.name %> for <%= @job.organisation.name %>:
-
-A new message has been sent by <%= @sender %> to <%= @sent_to == "collabs" ? "all collaborators:": "the applicant:" %>
-
+You have a message regarding job <strong><%= @job.name %></strong> for <%= @job.organisation.name %>:
+<br>
+A new message has been sent by <strong><%= @sender %></strong> to <%= @sent_to == "collabs" ? "all collaborators:": "the applicant:" %>
 <%= @message.html_safe %>
-
-You can reply to this email directly at <%= @reply_mail %> to send a message to other collaborators.
+<br>
+<br>
+<h4>Previous messages</h4>
+<% @previous_messages.each do |msg| %>
+<em><%= msg.from_applicant ? "Applicant" : msg.user.name %>: </em><%= msg.content.html_safe %>
+<br>
+<% end %>
+You can reply to this email directly at <strong><%= @reply_mail %></strong> to send a message to other collaborators.
+<br>
+<a href="<%= @application_url %>">View application</a>
+<br>
+<a href="<%= @job_url %>">View job</a>

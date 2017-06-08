@@ -1,3 +1,7 @@
-Hi, <%= @coll.name %>,
-There is a new application from <%= @application.name %> for job <%= @job.name %>.
-You can reply to this mail and that message will be emailed to the applicant.
+There is a new application from <strong><%= @application.name %></strong> for job <strong><%= @job.name %></strong>.
+<br>
+You can reply to this mail directy at <strong><%= @reply_mail %></strong> and that message will be emailed to the applicant.
+<br>
+<a href="<%= @application_url %>">View application</a>
+<br>
+<a href="<%= @job_url %>">View job</a>

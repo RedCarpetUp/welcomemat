@@ -5,6 +5,8 @@ class ApplicantMailer < ActionMailer::Base
     @applicant  = applicant
     @message = applicant_message
     @reply_mail = "applicant-"+@applicant.hashid+"@"+"wm-mail.hackergully.com"
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@applicant.hashid
     mail(from: @reply_mail, to: @applicant.email, subject: 'New message regarding your job application')
   end
 
@@ -16,6 +18,9 @@ class ApplicantMailer < ActionMailer::Base
     @message = applicant_message
     @sent_to = from_applicant === nil ? "collabs" : "applicant"
     @reply_mail = "collaborators-"+@applicant.hashid+"@"+"wm-mail.hackergully.com"
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@applicant.hashid
+    @previous_messages = @applicant.applicant_messages.offset(1).limit(5)
     mail(from: @reply_mail, to: @collab.email, subject: 'New message regarding your job application')
   end
 
@@ -24,6 +29,8 @@ class ApplicantMailer < ActionMailer::Base
   	@coll = coll
   	@application = application
   	@reply_mail = "applicant-"+@application.hashid+"@"+"wm-mail.hackergully.com"
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@application.hashid
   	mail(from: @reply_mail, to: @coll.email, subject: 'New application to your job '+@job.name)
   end
 
@@ -33,6 +40,9 @@ class ApplicantMailer < ActionMailer::Base
     @application = application
     @message = message
     @reply_mail = "applicant-"+@application.hashid+"@"+"wm-mail.hackergully.com"
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@application.hashid
+    @previous_messages = @application.applicant_messages.offset(1).limit(5)
     mail(from: @reply_mail, to: @coll.email, subject: 'New message from applicant to your job '+@job.name)
   end
 

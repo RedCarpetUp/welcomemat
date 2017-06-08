@@ -1,5 +1,9 @@
-You have a message regarding your application at <%= @job.organisation.name %> for position <%= @job.name %>:
-
+You have a message regarding your application at <strong><%= @job.organisation.name %></strong> for position <strong><%= @job.name %></strong>:
+<br>
 <%= @message.html_safe %>
-
-You can reply to this email directly at <%= @reply_mail %> to contact recruiters.
+<br>
+You can reply to this email directly at <strong><%= @reply_mail %></strong> to contact recruiters.
+<br>
+<a href="<%= @application_url %>">View application</a>
+<br>
+<a href="<%= @job_url %>">View job</a>
