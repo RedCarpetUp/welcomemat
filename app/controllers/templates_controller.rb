@@ -22,7 +22,7 @@ class TemplatesController < ApplicationController
         flash[:success] = "Template Saved"
         redirect_to organisation_job_application_path(@organisation, @job, @application)
       else
-        flash[:success] = "Template saving failed!"
+        flash[:error] = "Template saving failed!"
         @applicant_messages = @application.applicant_messages
         @applicant_message = ApplicantMessage.new
         render 'applications/show'

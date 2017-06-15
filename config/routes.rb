@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         resources :templates, only: [:create]
       end
     end
+    post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'
   end
 
 end

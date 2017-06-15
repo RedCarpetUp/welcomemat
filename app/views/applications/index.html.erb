@@ -1,22 +1,75 @@
 <h1><%= @job.name+" applications" %></h1>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @applications.each do |application| %>
+<%= form_with(url: organisation_job_mail_multiple_path(@organisation, @job), local: true) do |form| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= application.name %></td>
-        <td><%= link_to 'Show', organisation_job_application_path(@organisation, @job, application) %></td>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <tr>
+        <th><%= form.check_box "applications", {:multiple => true, :onchange => "all_applications_checked(this.checked)"}, "all_1", "all_0" %></th>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+      <% @applications.each do |application| %>
+        <tr>
+          <td><%= form.check_box "applications", {:multiple => true, :class => "applicant_checkbox"}, application.id.to_s+"_1", application.id.to_s+"_0" %></td>
+          <td><%= application.name %></td>
+          <td><%= link_to 'Show', organisation_job_application_path(@organisation, @job, application) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
+<h6>Send to selcted applicants</h6>
+  <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
+  <trix-editor input="application_messages_appl_content_box" id="application_messages_appl_content_box_editor"></trix-editor>
+
+  <div class="actions">
+    <%= form.submit "Mail" %>
+    <select onchange="fill_applicant_message_box(this.value)">
+      <option value="None">None</option>
+      <% @organisation.templates.each do |template| %>
+        <option value=<%= template.name %>><%= template.name %></option>
+      <% end %>
+    </select>
+  </div>
+
+<% end %>
 <br>
 
 <%= link_to 'New Application', new_organisation_job_application_path %>
+
+<div class="morelink">
+  <% if @page && @page > 1 %>
+    <a href="<%= @cur_url %><%=
+      @page == 2 ? "" : "?page=#{@page - 1}" %>">&lt;&lt; Page
+      <%= @page - 1 %></a>
+  <% end %>
+  <% if @show_more %>
+    <% if @page && @page > 1 %>
+      |
+    <% end %>
+    <a href="<%= @cur_url %>?page=<%=
+      @page + 1 %>">Page <%= @page + 1 %> &gt;&gt;</a>
+  <% end %>
+</div>
+
+<script>
+function all_applications_checked(is_checked) {
+  if(is_checked) {
+    var checks = document.getElementsByClassName("applicant_checkbox");
+    Array.prototype.forEach.call(checks, function(element) {
+      element.checked = true;
+    });
+  }
+  else {
+    var checks = document.getElementsByClassName("applicant_checkbox");
+    Array.prototype.forEach.call(checks, function(element) {
+      element.checked = false;
+    });
+  }
+}
+</script>

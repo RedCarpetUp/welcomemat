@@ -5,6 +5,8 @@ class ApplicationsController < ApplicationController
   before_action :set_application, only: [:show]
   before_action :require_collaborators, only: [:show, :index]
 
+  ITEMS_PER_PAGE = 2
+
   def show
     @applicant_messages = @application.applicant_messages
     @applicant_message = ApplicantMessage.new
@@ -12,7 +14,15 @@ class ApplicationsController < ApplicationController
   end
 
   def index
+    if params[:page]
+      @page = params[:page].to_i
+    else
+      @page = 1
+    end
     @applications = @job.applications
+    @show_more = !(@page == (@applications.count.to_f/ITEMS_PER_PAGE).ceil)
+    @applications = @applications.offset((@page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
+    @cur_url = organisation_job_applications_path
   end
 
   def new

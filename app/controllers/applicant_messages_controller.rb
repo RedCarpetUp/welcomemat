@@ -28,7 +28,7 @@ class ApplicantMessagesController < ApplicationController
         end
         flash[:success] = "Message Sent!"
       else
-        flash[:success] = "Message Sending failed!"
+        flash[:error] = "Message Sending failed!"
       end
       redirect_to organisation_job_application_path(@organisation, @job, @application)
     end
@@ -57,7 +57,7 @@ class ApplicantMessagesController < ApplicationController
         end
         flash[:success] = "Message Sent!"
       else
-        flash[:success] = "Message Sending failed!"
+        flash[:error] = "Message Sending failed!"
       end
       redirect_to organisation_job_application_path(@organisation, @job, @application)
     end
