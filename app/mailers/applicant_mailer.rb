@@ -7,7 +7,7 @@ class ApplicantMailer < ActionMailer::Base
     @reply_mail = "applicant-"+@applicant.hashid+"@"+"wm-mail.hackergully.com"
     @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
     @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@applicant.hashid
-    mail(from: @reply_mail, to: @applicant.email, subject: 'New message regarding your job application')
+    mail(from: @reply_mail, to: [@applicant.email]+@applicant.extra_applicant_emails.where(:is_greyed => false).pluck(:email), subject: 'New message regarding your job application')
   end
 
   def collab_message_email(job, applicant, collab, sender, applicant_message, from_applicant)

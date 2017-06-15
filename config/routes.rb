@@ -26,6 +26,9 @@ Rails.application.routes.draw do
         post '/applicant_messages/to_applicant', to: 'applicant_messages#create_to_applicant', as: 'applicant_messages_to_applicant'
         post '/applicant_messages/to_collaborators', to: 'applicant_messages#create_to_collaborators', as: 'applicant_messages_to_collaborators'
         resources :templates, only: [:create]
+        resources :extra_applicant_emails, only: [:create]
+        post '/extra_applicant_emails/:id/grey', to: 'extra_applicant_emails#grey', as: 'extra_applicant_emails_grey'
+        post '/extra_applicant_emails/:id/ungrey', to: 'extra_applicant_emails#ungrey', as: 'extra_applicant_emails_ungrey'
       end
     end
     post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'

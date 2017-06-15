@@ -11,6 +11,7 @@ class ApplicationsController < ApplicationController
     @applicant_messages = @application.applicant_messages
     @applicant_message = ApplicantMessage.new
     @template = Template.new
+    @extra_applicant_email = ExtraApplicantEmail.new
   end
 
   def index

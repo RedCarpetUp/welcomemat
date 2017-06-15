@@ -2,6 +2,37 @@
 <h3><%= @organisation.name %></h3>
 <h3><%= @application.name %></h3>
 <p><%= @application.email %></p>
+<% @application.extra_applicant_emails.each do |email| %>
+  <% if email.is_greyed %>
+    <p><strike><%= email.email %></strike></p>
+    <%= link_to "restore", organisation_job_application_extra_applicant_emails_ungrey_path(@organisation, @job, @application, email), method: "post" %>
+  <% else %>
+    <p><%= email.email %></p>
+    <%= link_to "delete", organisation_job_application_extra_applicant_emails_grey_path(@organisation, @job, @application, email), method: "post" %>
+  <% end %>
+<% end %>
+
+
+<h6>Add another email</h6>
+<%= form_with(url: organisation_job_application_extra_applicant_emails_path(@organisation, @job, @application), model: @extra_applicant_email, local: true) do |form| %>
+  <% if @extra_applicant_email.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@extra_applicant_email.errors.count, "error") %> prohibited this email from being saved:</h2>
+
+      <ul>
+      <% @extra_applicant_email.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.email_field :email %>
+
+  <%= form.submit %>
+<% end %>
+
+
 <p><%= @application.description %></p>
 <% @application.extra_fields.keys.each do |keyval| %>
   <p><span style="font-weight: 600;"><%= keyval+": " %></span><%= @application.extra_fields[keyval] %></p>

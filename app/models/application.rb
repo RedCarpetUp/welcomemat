@@ -3,6 +3,7 @@ class Application < ActiveRecord::Base
   include Hashid::Rails
   belongs_to :job
   has_many :applicant_messages
+  has_many :extra_applicant_emails
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
   validates :description, presence: true, length: { minimum: 5, maximum: 400 }
   validates :email, presence: true
