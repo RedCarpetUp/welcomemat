@@ -86,9 +86,10 @@ class JobsController < ApplicationController
   def create
     @job = Job.new(job_params)
     @job.organisation = @organisation
-    @job.collaborators << current_user
+    #@job.collaborators << current_user
 
     if @job.save
+      @job.collaborators << current_user
       flash[:success] = "Job Created!"
       redirect_to organisation_job_path(@organisation, @job)
     else
