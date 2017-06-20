@@ -1,11 +1,34 @@
 class ApplicationsController < ApplicationController
-  before_action :authenticate_user!, only: [:show, :index, :change_status]
+  before_action :authenticate_user!, only: [:show, :index, :change_status, :move_application]
   before_action :set_organisation
   before_action :set_job
   before_action :set_application, only: [:show]
-  before_action :require_collaborators, only: [:show, :index, :change_status]
+  before_action :require_collaborators, only: [:show, :index, :change_status, :move_application]
 
   ITEMS_PER_PAGE = 2
+
+  def move_application
+    @application = Application.find(params[:application_id])
+    @new_job = @organisation.jobs.find(params[:new_job_id])
+    @application.status = "Moved"
+    @new_application = Application.new
+    @new_application.name = @application.name
+    @new_application.email = @application.email
+    @new_application.description = @application.description
+    @new_application.extra_fields = @application.extra_fields
+    @new_application.job = @new_job
+    @new_application.status = "Moved"
+    if @application.save && @new_application.save
+      @new_job.collaborators.each do |coll|
+        ApplicantMailer.recruiter_notify(coll, @new_job, @new_application).deliver_later
+      end
+      flash[:success] = "Application moved successfully!"
+      redirect_to organisation_job_application_path(@organisation, @new_job, @new_application)
+    else
+      flash[:error] = "Application move failed!"
+      redirect_to organisation_job_application_path(@organisation, @job, @application)
+    end
+  end
 
   def change_status
     @application = Application.find(params[:application_id])

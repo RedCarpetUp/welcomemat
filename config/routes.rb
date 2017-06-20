@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         post '/extra_applicant_emails/:id/grey', to: 'extra_applicant_emails#grey', as: 'extra_applicant_emails_grey'
         post '/extra_applicant_emails/:id/ungrey', to: 'extra_applicant_emails#ungrey', as: 'extra_applicant_emails_ungrey'
         post '/change_status/:status', to: 'applications#change_status', as: 'change_status'
+        post '/move_application', to: 'applications#move_application', as: 'move_application'
       end
     end
     post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'

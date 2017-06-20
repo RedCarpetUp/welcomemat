@@ -126,6 +126,12 @@
   <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post %>
 <% end %>
 
+<h6>Move application</h6>
+<%= form_with(url: organisation_job_application_move_application_path(@organisation, @job, @application), local: true) do |form| %>
+  <%= form.select :new_job_id, @organisation.jobs.collect { |p| [ p.name, p.id ] } %>
+  <%= form.submit %>
+<% end %>
+
 <script>
 function fill_applicant_message_box(value) {
   var templates_mapping = {
