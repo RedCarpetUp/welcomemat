@@ -21,7 +21,7 @@ class ApplicantMailer < ActionMailer::Base
     @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
     @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@applicant.hashid
     @previous_messages = @applicant.applicant_messages.offset(1).limit(5)
-    mail(from: @reply_mail, to: @collab.email, subject: 'New message regarding your job application')
+    mail(from: @reply_mail, to: @collab.email, subject: '('+@applicant.hashid+')New message from collaborator '+@sender)
   end
 
   def recruiter_notify(coll, job, application)
@@ -31,7 +31,7 @@ class ApplicantMailer < ActionMailer::Base
   	@reply_mail = "applicant-"+@application.hashid+"@"+"wm-mail.hackergully.com"
     @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
     @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@application.hashid
-  	mail(from: @reply_mail, to: @coll.email, subject: 'New application to your job '+@job.name)
+  	mail(from: @reply_mail, to: @coll.email, subject: '('+@application.hashid+')New application to your job '+@job.name)
   end
 
   def recruiter_message_notify(coll, job, application, message)
@@ -43,7 +43,7 @@ class ApplicantMailer < ActionMailer::Base
     @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
     @application_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s+"/applications/"+@application.hashid
     @previous_messages = @application.applicant_messages.offset(1).limit(5)
-    mail(from: @reply_mail, to: @coll.email, subject: 'New message from applicant to your job '+@job.name)
+    mail(from: @reply_mail, to: @coll.email, subject: '('+@application.hashid+')New message from applicant '+@application.name+' to your job '+@job.name)
   end
 
 end

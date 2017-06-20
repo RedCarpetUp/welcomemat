@@ -1,6 +1,12 @@
 <h1><%= @job.name+" applications" %></h1>
 
 <%= form_with(url: organisation_job_mail_multiple_path(@organisation, @job), local: true) do |form| %>
+  <%= link_to "Show only Applied", organisation_job_applications_path(:filter => "status", :status => "Applied") %>
+  <%= link_to "Show only Shortlisted", organisation_job_applications_path(:filter => "status", :status => "Shortlisted") %>
+  <%= link_to "Show only Rejected", organisation_job_applications_path(:filter => "status", :status => "Rejected") %>
+  <%= link_to "Show only Hired", organisation_job_applications_path(:filter => "status", :status => "Hired") %>
+  <%= link_to "Show only Moved", organisation_job_applications_path(:filter => "status", :status => "Moved") %>
+  <%= link_to "No Filters", organisation_job_applications_path %>
   <table>
     <thead>
       <tr>
@@ -11,12 +17,14 @@
       <tr>
         <th><%= form.check_box "applications", {:multiple => true, :onchange => "all_applications_checked(this.checked)"}, "all_1", "all_0" %></th>
         <th>Name</th>
+        <th>Status</th>
         <th>Actions</th>
       </tr>
       <% @applications.each do |application| %>
         <tr>
           <td><%= form.check_box "applications", {:multiple => true, :class => "applicant_checkbox"}, application.id.to_s+"_1", application.id.to_s+"_0" %></td>
           <td><%= application.name %></td>
+          <td><%= application.status %></td>
           <td><%= link_to 'Show', organisation_job_application_path(@organisation, @job, application) %></td>
         </tr>
       <% end %>

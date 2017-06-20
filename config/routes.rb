@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :extra_applicant_emails, only: [:create]
         post '/extra_applicant_emails/:id/grey', to: 'extra_applicant_emails#grey', as: 'extra_applicant_emails_grey'
         post '/extra_applicant_emails/:id/ungrey', to: 'extra_applicant_emails#ungrey', as: 'extra_applicant_emails_ungrey'
+        post '/change_status/:status', to: 'applications#change_status', as: 'change_status'
       end
     end
     post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'

@@ -121,6 +121,11 @@
   </div>
 <% end %>
 
+<h5>Status: <%= @application.status %></h5>
+<% ["Shortlisted", "Applied", "Rejected", "Hired"].each do |status| %>
+  <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post %>
+<% end %>
+
 <script>
 function fill_applicant_message_box(value) {
   var templates_mapping = {
