@@ -9,21 +9,30 @@ class ApplicationsController < ApplicationController
 
   def move_application
     @application = Application.find(params[:application_id])
-    @new_job = @organisation.jobs.find(params[:new_job_id])
-    @application.status = "Moved"
-    @new_application = Application.new
-    @new_application.name = @application.name
-    @new_application.email = @application.email
-    @new_application.description = @application.description
-    @new_application.extra_fields = @application.extra_fields
-    @new_application.job = @new_job
-    @new_application.status = "Moved"
-    if @application.save && @new_application.save
-      @new_job.collaborators.each do |coll|
-        ApplicantMailer.recruiter_notify(coll, @new_job, @new_application).deliver_later
+    if @application.status != "Moved Out"
+      @new_job = @organisation.jobs.find(params[:new_job_id])
+      @application.status = "Moved Out"
+      @new_application = Application.new
+      @new_application.name = @application.name
+      @new_application.email = @application.email
+      @new_application.description = @application.description
+      @new_application.extra_fields = @application.extra_fields
+      @new_application.job = @new_job
+      @new_application.status = "Moved In"
+      if @application.save && @new_application.save
+        ApplicantMailer.move_notify(@new_application, @job, @new_job).deliver_later
+        @job.collaborators.each do |coll|
+          ApplicantMailer.recruiter_move_notify_old_collaborators(coll, @job, @application, @new_job, current_user).deliver_later
+        end
+        @new_job.collaborators.each do |coll|
+          ApplicantMailer.recruiter_move_notify_new_collaborators(coll, @new_job, @new_application, @job).deliver_later
+        end
+        flash[:success] = "Application moved successfully!"
+        redirect_to organisation_job_application_path(@organisation, @job, @application)
+      else
+        flash[:error] = "Application move failed!"
+        redirect_to organisation_job_application_path(@organisation, @job, @application)
       end
-      flash[:success] = "Application moved successfully!"
-      redirect_to organisation_job_application_path(@organisation, @new_job, @new_application)
     else
       flash[:error] = "Application move failed!"
       redirect_to organisation_job_application_path(@organisation, @job, @application)
@@ -32,10 +41,24 @@ class ApplicationsController < ApplicationController
 
   def change_status
     @application = Application.find(params[:application_id])
-    @application.status = params[:status]
-    if @application.save
-      flash[:success] = "Status change successful!"
-      redirect_to organisation_job_application_path(@organisation, @job, @application)
+    if @application.status != "Moved Out"
+      if params[:status] != @application.status && ["Shortlisted", "Applied", "Rejected", "Hired"].include?(params[:status])
+        @application.status = params[:status]
+        if @application.save
+          flash[:success] = "Status change successful!"
+          ApplicantMailer.status_notify(@application, @job).deliver_later
+          @job.collaborators.each do |coll|
+            ApplicantMailer.recruiter_status_change_notify_collaborators(coll, @job, @application, current_user).deliver_later
+          end
+          redirect_to organisation_job_application_path(@organisation, @job, @application)
+        else
+          flash[:error] = "Status change failed!"
+          redirect_to organisation_job_application_path(@organisation, @job, @application)
+        end
+      else
+        flash[:error] = "Status change failed!"
+        redirect_to organisation_job_application_path(@organisation, @job, @application)
+      end
     else
       flash[:error] = "Status change failed!"
       redirect_to organisation_job_application_path(@organisation, @job, @application)

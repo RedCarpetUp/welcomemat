@@ -8,6 +8,8 @@ class Application < ActiveRecord::Base
   validates :description, presence: true, length: { minimum: 5, maximum: 400 }
   validates :email, presence: true
   validate :each_item_in_fields
+  validates :status, presence: true
+  validates_inclusion_of :status, :in => ["Shortlisted", "Applied", "Rejected", "Hired", "Moved Out", "Moved In"]
  
   def each_item_in_fields
     min_length_failed = false

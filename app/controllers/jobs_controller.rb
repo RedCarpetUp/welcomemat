@@ -9,7 +9,6 @@ class JobsController < ApplicationController
   end
 
   def mail_multiple
-
     applications = Array.new
     applications_filtered_for_repeats = params[:applications].map {|x| x.split("_")[0]}.uniq.map {|x| params[:applications].include?(x.to_s+"_1") ? x.to_s+"_1" : x.to_s+"_0"}
     if applications_filtered_for_repeats.include?("all_1")

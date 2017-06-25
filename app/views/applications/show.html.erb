@@ -121,15 +121,17 @@
   </div>
 <% end %>
 
-<h5>Status: <%= @application.status %></h5>
-<% ["Shortlisted", "Applied", "Rejected", "Hired"].each do |status| %>
-  <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post %>
-<% end %>
+<% if @application.status != "Moved Out" %>
+  <h5>Status: <%= @application.status %></h5>
+  <% ["Shortlisted", "Applied", "Rejected", "Hired"].delete_if{|i|i==@application.status}.each do |status| %>
+    <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post %>
+  <% end %>
 
-<h6>Move application</h6>
-<%= form_with(url: organisation_job_application_move_application_path(@organisation, @job, @application), local: true) do |form| %>
-  <%= form.select :new_job_id, @organisation.jobs.collect { |p| [ p.name, p.id ] } %>
-  <%= form.submit %>
+  <h6>Move application</h6>
+  <%= form_with(url: organisation_job_application_move_application_path(@organisation, @job, @application), local: true) do |form| %>
+    <%= form.select :new_job_id, @organisation.jobs.where.not(id: @job.id).collect { |p| [ p.name, p.id ] } %>
+    <%= form.submit %>
+  <% end %>
 <% end %>
 
 <script>

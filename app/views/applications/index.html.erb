@@ -5,7 +5,8 @@
   <%= link_to "Show only Shortlisted", organisation_job_applications_path(:filter => "status", :status => "Shortlisted") %>
   <%= link_to "Show only Rejected", organisation_job_applications_path(:filter => "status", :status => "Rejected") %>
   <%= link_to "Show only Hired", organisation_job_applications_path(:filter => "status", :status => "Hired") %>
-  <%= link_to "Show only Moved", organisation_job_applications_path(:filter => "status", :status => "Moved") %>
+  <%= link_to "Show only Moved In", organisation_job_applications_path(:filter => "status", :status => "Moved In") %>
+  <%= link_to "Show only Moved Out", organisation_job_applications_path(:filter => "status", :status => "Moved Out") %>
   <%= link_to "No Filters", organisation_job_applications_path %>
   <table>
     <thead>

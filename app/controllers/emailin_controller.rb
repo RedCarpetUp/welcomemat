@@ -53,6 +53,7 @@ class EmailinController < ApplicationController
             end
           end
         end
+      end
     end
   end
 
