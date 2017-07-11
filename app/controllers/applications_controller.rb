@@ -5,7 +5,7 @@ class ApplicationsController < ApplicationController
   before_action :set_application, only: [:show]
   before_action :require_collaborators, only: [:show, :index, :change_status, :move_application]
 
-  ITEMS_PER_PAGE = 2
+  ITEMS_PER_PAGE = 10
 
   def move_application
     @application = Application.find(params[:application_id])
@@ -98,8 +98,8 @@ class ApplicationsController < ApplicationController
     @application.job = @job
     @application.status = "Applied"
 
-    if params[:application].slice(*@job.fields).keys.length > 0
-      @application.extra_fields = params[:application].slice(*@job.fields).permit!.to_hash
+    if params[:application].slice(*@job.fields["entries"].map {|x| x["name"]}).keys.length > 0
+      @application.extra_fields = params[:application].slice(*@job.fields["entries"].map {|x| x["name"]}).permit!.to_hash
     end
 
     if @application.save

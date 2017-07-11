@@ -6,39 +6,60 @@ class Job < ActiveRecord::Base
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
   validates :description, presence: true, length: { minimum: 5, maximum: 400 }
   validate :each_item_in_fields
- 
+
   def each_item_in_fields
-    min_length_failed = false
-    max_length_failed = false
-    no_repeat_failed = false
-    fields.each do |field|
-      if field.downcase == "name" or field.downcase == "description" or field.downcase == "email"
-        if !no_repeat_failed
-          errors.add(:fields, "items must not be email, name or description")
-        end
-        no_repeat_failed = true
+    invalid_format = false
+    invalid_name_min_length = false
+    invalid_name_max_length = false
+    invalid_name_repeat = false
+    invalid_multiples = false
+    ["entries"].map {|x| x["name"]}.each_with_object(Hash.new(0)){|key,hash| hash[key] += 1}
+    fields["entries"].map {|x| x["name"]}.each do |freq_item|
+      if fields["entries"].map {|x| x["name"]}.each_with_object(Hash.new(0)){|key,hash| hash[key] += 1}[freq_item] > 1
+        invalid_multiples = true
       end
-      if field.length < 4
-        if !min_length_failed
-          errors.add(:fields, "items must be atleast 4 characters")
+    end
+    fields["entries"].each do |entry|
+      #Is comparing arrays like this ok ?
+      if entry.keys.sort == ["name", "type", "required"].sort and ["numeric", "text", "date"].include?(entry["type"]) and [true, false].include?(entry["required"])
+        #Only one of these will be true, per entry
+        if entry["name"].length < 4
+          invalid_name_min_length = true
         end
-        min_length_failed = true
+        if entry["name"].length > 40
+          invalid_name_max_length = true
+        end
+        if ["name", "description", "email"].include?(entry["name"].downcase)
+          invalid_name_repeat = true
+        end
+      else
+        invalid_format = true
       end
-      if field.length > 40
-        if !max_length_failed
-          errors.add(:fields, "items must be atmost 40 characters")
-        end
-        max_length_failed = true
+    end
+    if invalid_format
+      errors.add(:fields, "invalid format")
+    else
+      if invalid_multiples
+        errors.add(:fields, "items must not be same")
+      end
+      if invalid_name_repeat
+        errors.add(:fields, "items must not be email, name or description")
+      end
+      if invalid_name_min_length
+        errors.add(:fields, "items must be atleast 4 characters")
+      end
+      if invalid_name_max_length
+        errors.add(:fields, "items must be atmost 40 characters")
       end
     end
   end
 
   def fields_required=(des)
-    self[:fields] = des.split(",").map { |s| s.lstrip.rstrip }
+    self[:fields] = ActiveSupport::JSON.decode(des)
   end
 
   def fields_required
-    self[:fields].join(", ")
+    ActiveSupport::JSON.encode(self[:fields])
   end
 
 end

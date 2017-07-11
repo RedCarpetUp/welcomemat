@@ -20,10 +20,18 @@
   <%= form.label :description %><br />
   <%= form.text_area :description %>
 
-  <% @job.fields.each do |field| %>
+  <% @job.fields["entries"].each do |entry| %>
     <br />
-    <%= form.label field %><br />
-    <%= form.text_area field, :value => application.extra_fields[field] %>
+    <% if entry["type"] == "text" %>
+      <%= form.label entry["name"] %><br />
+      <%= form.text_area entry["name"], :value => application.extra_fields[entry["name"]] %>
+    <% elsif entry["type"] == "numeric" %>
+      <%= form.label entry["name"] %><br />
+      <%= form.number_field entry["name"], :value => application.extra_fields[entry["name"]] %>
+    <% elsif entry["type"] == "date" %>
+      <%= form.label entry["name"] %><br />
+      <%= form.date_field entry["name"], :value => application.extra_fields[entry["name"]] %>
+    <% end %>
   <% end %>
 
   <div class="actions">
