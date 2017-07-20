@@ -18,9 +18,157 @@
   <%= form.text_area :description %>
   <br />
   <%= form.label :fields_required %><br />
-  <%= form.text_field :fields_required %>
+  <%= form.hidden_field :fields_required, :class => "job_json_field" %>
+  <div class="job_json_box">
+    <div class="job_json_fields_box">
+    </div>
+    <button class="job_json_box_add_button">Add Field</button>
+  </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+  function create_label(label_name) {
+    var label_el = document.createElement("label");
+    var label_text_node = document.createTextNode(label_name);
+    label_el.appendChild(label_text_node);
+    return label_el;
+  }
+
+  function create_required_select(input_value) {
+    var select_el = document.createElement("select");
+    var text_option = document.createElement("option");
+    var numeric_option = document.createElement("option");
+    var text_option_node = document.createTextNode("Yes");
+    var numeric_option_node = document.createTextNode("No");
+    text_option.appendChild(text_option_node);
+    numeric_option.appendChild(numeric_option_node);
+    text_option.value = "true";
+    numeric_option.value = "false";
+    select_el.appendChild(text_option);
+    select_el.appendChild(numeric_option);
+    select_el.value = input_value;
+    return select_el;
+  }
+
+  function create_type_select(input_value) {
+    var select_el = document.createElement("select");
+    var text_option = document.createElement("option");
+    var numeric_option = document.createElement("option");
+    var date_option = document.createElement("option");
+    var text_option_node = document.createTextNode("Text");
+    var numeric_option_node = document.createTextNode("Numeric");
+    var date_option_node = document.createTextNode("Date");
+    text_option.appendChild(text_option_node);
+    numeric_option.appendChild(numeric_option_node);
+    date_option.appendChild(date_option_node);
+    text_option.value = "text";
+    numeric_option.value = "numeric";
+    date_option.value = "date";
+    select_el.appendChild(text_option);
+    select_el.appendChild(numeric_option);
+    select_el.appendChild(date_option);
+    select_el.value = input_value;
+    return select_el;
+  }
+
+  function create_input(input_value) {
+    var input_el = document.createElement("input");
+    input_el.value = input_value;
+    return input_el;
+  }
+
+  function create_field(name, value="", entry_id) {
+    var field_div = document.createElement("div");
+    field_div.id = name.toLowerCase();
+    var label_el = create_label(name);
+    var input_el;
+    if(name==="Name") {
+      input_el = create_input(value);
+    }
+    else if(name==="Type") {
+      input_el = create_type_select(value);
+    }
+    else if(name==="Required") {
+      input_el = create_required_select(value);
+    }
+    input_el.setAttribute("oninput", "edit_entry("+entry_id+", \""+name.toLowerCase()+"\", this.value)");
+    field_div.appendChild(label_el);
+    field_div.appendChild(input_el);
+    return field_div;
+  }
+
+  function create_button(name, action) {
+    var button_el = document.createElement("button");
+    var button_text_node = document.createTextNode(name);
+    button_el.appendChild(button_text_node);
+    button_el.setAttribute("onclick", action);
+    return button_el;
+  }
+
+  function create_entry(entry, entry_id) {
+    var entry_div = document.createElement("div");
+    entry_div.id = "entry_"+entry_id;
+    var name_field = create_field("Name", entry.name, entry_id);
+    var type_field = create_field("Type", entry.type, entry_id);
+    var required_field = create_field("Required", entry.required, entry_id);
+    var delete_button = create_button("Delete", "delete_entry("+entry_id+")");
+    entry_div.appendChild(name_field);
+    entry_div.appendChild(type_field);
+    entry_div.appendChild(required_field);
+    entry_div.appendChild(delete_button);
+    return entry_div;
+  }
+
+  function bootstrap_form() {
+    var box_el = document.getElementsByClassName("job_json_fields_box")[0];
+    while (box_el.firstChild) {
+      box_el.removeChild(box_el.firstChild);
+    }
+    for(var i = 0; i < fields.entries.length; i++) {
+      var append_entry = create_entry(fields.entries[i], i);
+      box_el.appendChild(append_entry);
+    }
+  }
+
+  function add_new_entry(fields) {
+    var entries_array = fields.entries;
+    entries_array.push({name: '', type: '', required: ''});
+    fields.entries = entries_array;
+    bootstrap_form();
+    input_el.value = JSON.stringify(fields);
+  }
+
+  function delete_entry(id) {
+    var entries_array = fields.entries;
+    entries_array.splice(id, 1);
+    fields.entries = entries_array;
+    bootstrap_form();
+    input_el.value = JSON.stringify(fields);
+  }
+
+  function edit_entry(id, type, value) {
+    if(type==="name") {
+      fields.entries[id].name = value;
+    }
+    else if(type==="type") {
+      fields.entries[id].type = value;
+    }
+    else if(type==="required") {
+      fields.entries[id].required = value==="true";
+    }
+    input_el.value = JSON.stringify(fields);
+  }
+
+  var input_el = document.getElementsByClassName("job_json_field")[0];
+  var fields = JSON.parse(input_el.value);
+  bootstrap_form();
+  var add_button = document.getElementsByClassName("job_json_box_add_button")[0];
+  add_button.onclick = function(e) {
+    e.preventDefault();
+    add_new_entry(fields);
+  };
+</script>

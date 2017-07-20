@@ -23,13 +23,13 @@
   <% @job.fields["entries"].each do |entry| %>
     <br />
     <% if entry["type"] == "text" %>
-      <%= form.label entry["name"] %><br />
+      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
       <%= form.text_area entry["name"], :value => application.extra_fields[entry["name"]] %>
     <% elsif entry["type"] == "numeric" %>
-      <%= form.label entry["name"] %><br />
+      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
       <%= form.number_field entry["name"], :value => application.extra_fields[entry["name"]] %>
     <% elsif entry["type"] == "date" %>
-      <%= form.label entry["name"] %><br />
+      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
       <%= form.date_field entry["name"], :value => application.extra_fields[entry["name"]] %>
     <% end %>
   <% end %>
