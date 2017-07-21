@@ -1,5 +1,6 @@
-<h1>New Organisation</h1>
-
-<%= render 'form', organisation: @organisation %>
-
-<%= link_to 'Back', organisations_path %>
+<div class="container">
+  <h2>New Organisation</h2>
+  <%= render 'form', organisation: @organisation %>
+  <br>
+  <%= link_to 'Back', organisations_path, class: "btn btn-success btn-sm" %>
+</div>

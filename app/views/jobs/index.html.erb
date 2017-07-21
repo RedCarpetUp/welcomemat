@@ -1,24 +1,27 @@
-<h1><%= @organisation.name+" jobs" %></h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div class="overimage">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="container">
+  <h2><%= @organisation.name+" jobs" %></h2>
+  <br>
+  <div class="container">
     <% @jobs.each do |job| %>
-      <tr>
-        <td><%= job.name %></td>
-        <td><%= link_to 'Show', organisation_job_path(@organisation, job) %></td>
-        <td><%= link_to 'Edit', edit_organisation_job_path(@organisation, job) %></td>
-        <td><%= link_to 'Destroy', organisation_job_path(@organisation, job), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <div class="row well">
+        <h4 class="pull-left"><%= job.name %></h4>
+        <div class="pull-right">
+          <div class="btn-group" role="group" aria-label="job_actions">
+            <%= link_to 'Show', organisation_job_path(@organisation, job), class: 'btn btn-success btn-sm' %>
+            <% if user_signed_in? && job.collaborators.include?(current_user) %>
+              <%= link_to 'Edit', edit_organisation_job_path(@organisation, job), class: 'btn btn-warning btn-sm' %>
+              <%= link_to 'Destroy', organisation_job_path(@organisation, job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New job', new_organisation_job_path %>
+  </div>
+  <% if user_signed_in? && @organisation.owner == current_user %>
+      <br>
+      <%= link_to 'New job', new_organisation_job_path, class: "btn btn-warning btn-sm" %>
+  <% end %>
+</div>

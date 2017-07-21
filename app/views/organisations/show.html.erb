@@ -1,6 +1,14 @@
-<h2><%= @organisation.name %></h2>
-<p><%= @organisation.description %></p>
-<%= link_to 'Show jobs', organisation_jobs_path(@organisation) %></br>
-
-<%= link_to 'Edit', edit_organisation_path(@organisation) %> |
-<%= link_to 'Back', organisations_path %>
+<div class="overimage">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="centered-text container">
+  <h2><%= @organisation.name %></h2>
+  <p><%= @organisation.description %></p>
+  <br>
+  <%= link_to 'Show jobs', organisation_jobs_path(@organisation), class: 'btn btn-success' %>
+  <br><br>
+  <% if user_signed_in? && @organisation.owner == current_user %>
+    <%= link_to 'Edit', edit_organisation_path(@organisation), class: "btn btn-warning btn-sm" %>
+  <% end %>
+  <%= link_to 'Back', organisations_path, class: "btn btn-warning btn-sm" %>
+</div>

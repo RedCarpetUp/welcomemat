@@ -4,5 +4,5 @@ class Organisation < ActiveRecord::Base
   has_many :templates, dependent: :destroy
   belongs_to :owner, class_name: "User"
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
-  validates :description, presence: true, length: { minimum: 5, maximum: 400 }
+  validates :description, presence: true, length: { minimum: 5, maximum: 1000 }
 end

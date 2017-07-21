@@ -1,6 +1,7 @@
-<h1>Editing Job</h1>
-
-<%= render 'form', job: @job %>
-
-<%= link_to 'Show', organisation_job_path(@organisation, @job) %> |
-<%= link_to 'Back', organisation_jobs_path %>
+<div class="container">
+  <h2>Editing <%= @job.name %>'s details</h2>
+  <%= render 'form', job: @job %>
+  <br>
+  <%= link_to 'Show', organisation_job_path(@organisation, @job), class: "btn btn-success btn-sm" %>
+  <%= link_to 'Back', organisation_jobs_path, class: "btn btn-success btn-sm" %>
+</div>

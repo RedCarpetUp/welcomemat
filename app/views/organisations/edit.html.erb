@@ -1,6 +1,7 @@
-<h1>Editing Organisation</h1>
-
-<%= render 'form', organisation: @organisation %>
-
-<%= link_to 'Show', @organisation %> |
-<%= link_to 'Back', organisations_path %>
+<div class="container">
+  <h2>Editing <%= @organisation.name %>'s details</h2>
+  <%= render 'form', organisation: @organisation %>
+  <br>
+  <%= link_to 'Show', @organisation, class: "btn btn-success btn-sm" %>
+  <%= link_to 'Back', organisations_path, class: "btn btn-success btn-sm" %>
+</div>

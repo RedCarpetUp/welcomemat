@@ -1,84 +1,178 @@
-<h1><%= @job.name+" applications" %></h1>
-
-<%= form_with(url: organisation_job_mail_multiple_path(@organisation, @job), local: true) do |form| %>
-  <%= link_to "Show only Applied", organisation_job_applications_path(:filter => "status", :status => "Applied") %>
-  <%= link_to "Show only Shortlisted", organisation_job_applications_path(:filter => "status", :status => "Shortlisted") %>
-  <%= link_to "Show only Rejected", organisation_job_applications_path(:filter => "status", :status => "Rejected") %>
-  <%= link_to "Show only Hired", organisation_job_applications_path(:filter => "status", :status => "Hired") %>
-  <%= link_to "Show only Moved In", organisation_job_applications_path(:filter => "status", :status => "Moved In") %>
-  <%= link_to "Show only Moved Out", organisation_job_applications_path(:filter => "status", :status => "Moved Out") %>
-  <%= link_to "No Filters", organisation_job_applications_path %>
-  <table>
-    <thead>
-      <tr>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th><%= form.check_box "applications", {:multiple => true, :onchange => "all_applications_checked(this.checked)"}, "all_1", "all_0" %></th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      <% @applications.each do |application| %>
+<div class="overimage small">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="container">
+  <h3><%= @job.name+" applications" %></h3>
+  <%= form_with(url: organisation_job_mail_multiple_path(@organisation, @job), local: true) do |form| %>
+    <table class="table table-bordered table-hover table-striped applicants-table">
+      <thead>
         <tr>
-          <td><%= form.check_box "applications", {:multiple => true, :class => "applicant_checkbox"}, application.id.to_s+"_1", application.id.to_s+"_0" %></td>
-          <td><%= application.name %></td>
-          <td><%= application.status %></td>
-          <td><%= link_to 'Show', organisation_job_application_path(@organisation, @job, application) %></td>
+          <th colspan="4">
+            <span class="pull-left">
+              <%= @job.applications.count %> applications
+            </span>
+            <span class="pull-right">
+              <span>Filter By: </span>
+              <span class="dropdown">
+                <a href="#" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Status <span class="caret"></span></a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><%= link_to "Applied", organisation_job_applications_path(:filter => "status", :status => "Applied") %></li>
+                  <li><%= link_to "Shortlisted", organisation_job_applications_path(:filter => "status", :status => "Shortlisted") %></li>
+                  <li><%= link_to "Rejected", organisation_job_applications_path(:filter => "status", :status => "Rejected") %></li>
+                  <li><%= link_to "Hired", organisation_job_applications_path(:filter => "status", :status => "Hired") %></li>
+                  <li><%= link_to "Moved In", organisation_job_applications_path(:filter => "status", :status => "Moved In") %></li>
+                  <li><%= link_to "Moved Out", organisation_job_applications_path(:filter => "status", :status => "Moved Out") %></li>
+                  <li role="separator" class="divider"></li>
+                  <li><%= link_to "No Filters", organisation_job_applications_path %></li>
+                </ul>
+              </span>
+            </span>
+          </th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <tr>
+          <th><%= form.check_box "applications", {:multiple => true, :onchange => "all_applications_checked(this.checked)"}, "all_1", "all_0" %></th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @applications.each do |application| %>
+          <tr>
+            <td><%= form.check_box "applications", {:multiple => true, :class => "applicant_checkbox", :onchange => "application_checked(this.checked)"}, application.id.to_s+"_1", application.id.to_s+"_0" %></td>
+            <td><%= application.name %></td>
+            <td><%= application.status %></td>
+            <td><%= link_to 'Show', organisation_job_application_path(@organisation, @job, application), class: "btn btn-link btn-xs" %></td>
+          </tr>
+        <% end %>
+        <tr>
+        <td colspan="4">
+          <%= link_to new_organisation_job_application_path, class: 'btn btn-primary btn-xs' do %>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <span>New Application</span>
+          <% end %>
+          <button type="button" class="btn btn-info btn-xs" id="mesage_send_modal_button" data-toggle="modal" data-target="#mesage_send_modal">
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+            <span>Send Message to Selected</span>
+          </button>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Table Pagination">
+      <ul class="pager">
+        <% if @page && @page > 1 %>
+          <li class="previous">
+            <a href="<%= @cur_url %><%= @page == 2 ? "" : "?page=#{@page - 1}" %>">&lt;&lt; Page <%= @page - 1 %></a>
+          </li>
+        <% end %>
+        <% if @show_more %>
+          <li class="previous">
+            <a href="<%= @cur_url %>?page=<%= @page + 1 %>">Page <%= @page + 1 %> &gt;&gt;</a>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
 
-<h6>Send to selcted applicants</h6>
-  <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
-  <trix-editor input="application_messages_appl_content_box" id="application_messages_appl_content_box_editor"></trix-editor>
-
-  <div class="actions">
-    <%= form.submit "Mail" %>
-    <select onchange="fill_applicant_message_box(this.value)">
-      <option value="None">None</option>
-      <% @organisation.templates.each do |template| %>
-        <option value=<%= template.name %>><%= template.name %></option>
-      <% end %>
-    </select>
-  </div>
-
-<% end %>
-<br>
-
-<%= link_to 'New Application', new_organisation_job_application_path %>
-
-<div class="morelink">
-  <% if @page && @page > 1 %>
-    <a href="<%= @cur_url %><%=
-      @page == 2 ? "" : "?page=#{@page - 1}" %>">&lt;&lt; Page
-      <%= @page - 1 %></a>
+    <div class="modal fade" id="mesage_send_modal" tabindex="-1" role="dialog" aria-labelledby="mesage_send_modal_label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="mesage_send_modal_label">Send to selected applicants</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
+              <trix-editor class="form-control" input="application_messages_appl_content_box" id="application_messages_appl_content_box_editor"></trix-editor>
+            </div>
+            <div class="form-group form-inline">
+              <label class="control-label">Use Template</label>
+              <select class="form-control" onchange="fill_applicant_message_box(this.value)">
+                <option value="None">None</option>
+                <% @organisation.templates.each do |template| %>
+                  <option value=<%= template.name %>><%= template.name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= form.submit "Send", class: "btn btn-success" %>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
-  <% if @show_more %>
-    <% if @page && @page > 1 %>
-      |
-    <% end %>
-    <a href="<%= @cur_url %>?page=<%=
-      @page + 1 %>">Page <%= @page + 1 %> &gt;&gt;</a>
-  <% end %>
+  <br>
 </div>
 
 <script>
+var is_messages_selected = false;
+
+function update_msg_button() {
+  var the_button = document.getElementById("mesage_send_modal_button");
+  if(is_messages_selected) {
+    if(the_button.className === "btn btn-info btn-xs hidden") {
+      the_button.className = "btn btn-info btn-xs";
+    }
+  }
+  else {
+    if(the_button.className === "btn btn-info btn-xs") {
+      the_button.className = "btn btn-info btn-xs hidden";
+    }
+  }
+}
+
+function load_initial_selection() {
+  var checks = document.getElementsByClassName("applicant_checkbox");
+  Array.prototype.forEach.call(checks, function(element) {
+    if((!is_messages_selected) && element.checked) {
+      is_messages_selected = true;
+    }
+  });
+  update_msg_button();
+}
+
+function application_checked(is_checked) {
+  var checks = document.getElementsByClassName("applicant_checkbox");
+  var got_any_checked = false;
+  if(is_checked) {
+    if(!is_messages_selected) {
+      is_messages_selected = true;
+    }
+  }
+  else {
+    got_any_checked = false;
+    Array.prototype.forEach.call(checks, function(element) {
+      if((!got_any_checked) && element.checked) {
+        got_any_checked = true;
+      }
+    });
+    if((!got_any_checked) && is_messages_selected) {
+      is_messages_selected = false;
+    }
+  }
+  update_msg_button();
+}
+
 function all_applications_checked(is_checked) {
   if(is_checked) {
     var checks = document.getElementsByClassName("applicant_checkbox");
     Array.prototype.forEach.call(checks, function(element) {
       element.checked = true;
+      is_messages_selected = true;
     });
   }
   else {
     var checks = document.getElementsByClassName("applicant_checkbox");
     Array.prototype.forEach.call(checks, function(element) {
       element.checked = false;
+      is_messages_selected = false;
     });
   }
+  update_msg_button();
 }
+
+load_initial_selection();
 </script>

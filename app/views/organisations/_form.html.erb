@@ -1,23 +1,27 @@
 <%= form_with(model: organisation, local: true) do |form| %>
   <% if organisation.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(organisation.errors.count, "error") %> prohibited this organisation from being saved:</h2>
-
-      <ul>
-      <% organisation.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+      <h4><%= pluralize(organisation.errors.count, "error") %> prohibited this organisation from being saved:</h4>
+      <div class="alert alert-danger">
+        <ul>
+          <% organisation.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
-
-  <%= form.label :name %><br />
-  <%= form.text_field :name %>
-  <br />
-  <%= form.label :description %><br />
-  <%= form.text_area :description %>
-
+  <div class="form-group">
+    <%= form.label :name, class: "control-label" %><br />
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= form.label :description, class: "control-label" %><br />
+    <%= form.text_area :description, class: "form-control", rows: "5" %>
+  </div>
+  <br>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-success" %>
   </div>
 <% end %>

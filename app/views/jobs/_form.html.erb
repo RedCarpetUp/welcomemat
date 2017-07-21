@@ -2,37 +2,43 @@
   <% if job.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(job.errors.count, "error") %> prohibited this job from being saved:</h2>
-
-      <ul>
-      <% job.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+      <div class="alert alert-danger">
+        <ul>
+          <% job.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
-
-  <%= form.label :name %><br />
-  <%= form.text_field :name %>
-  <br />
-  <%= form.label :description %><br />
-  <%= form.text_area :description %>
-  <br />
-  <%= form.label :fields_required %><br />
-  <%= form.hidden_field :fields_required, :class => "job_json_field" %>
-  <div class="job_json_box">
-    <div class="job_json_fields_box">
-    </div>
-    <button class="job_json_box_add_button">Add Field</button>
+  <div class="form-group">
+    <%= form.label :name, class: "control-label" %><br />
+    <%= form.text_field :name, class: "form-control" %>
   </div>
-
+  <br />
+  <div class="form-group">
+    <%= form.label :description, class: "control-label" %><br />
+    <%= form.text_area :description, class: "form-control", rows: "5" %>
+  </div>
+  <br />
+  <div class="form-group">
+    <%= form.label :fields_required, class: "control-label" %><br />
+    <%= form.hidden_field :fields_required, :class => "job_json_field" %>
+    <div class="job_json_box">
+      <div class="job_json_fields_box">
+      </div>
+      <button class="btn btn-default btn-sm job_json_box_add_button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Field</button>
+    </div>
+  </div>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-success" %>
   </div>
 <% end %>
 
 <script>
   function create_label(label_name) {
     var label_el = document.createElement("label");
+    label_el.className = "input-group-addon";
     var label_text_node = document.createTextNode(label_name);
     label_el.appendChild(label_text_node);
     return label_el;
@@ -50,6 +56,7 @@
     numeric_option.value = "false";
     select_el.appendChild(text_option);
     select_el.appendChild(numeric_option);
+    select_el.className = "form-control";
     select_el.value = input_value;
     return select_el;
   }
@@ -71,12 +78,14 @@
     select_el.appendChild(text_option);
     select_el.appendChild(numeric_option);
     select_el.appendChild(date_option);
+    select_el.className = "form-control";
     select_el.value = input_value;
     return select_el;
   }
 
   function create_input(input_value) {
     var input_el = document.createElement("input");
+    input_el.className = "form-control";
     input_el.value = input_value;
     return input_el;
   }
@@ -84,6 +93,7 @@
   function create_field(name, value="", entry_id) {
     var field_div = document.createElement("div");
     field_div.id = name.toLowerCase();
+    field_div.className = "input-group";
     var label_el = create_label(name);
     var input_el;
     if(name==="Name") {
@@ -103,15 +113,19 @@
 
   function create_button(name, action) {
     var button_el = document.createElement("button");
-    var button_text_node = document.createTextNode(name);
+    var button_text_node = document.createElement("span");
+    button_text_node.className = "glyphicon glyphicon-trash";
+    button_text_node.setAttribute("aria-hidden", "true");
     button_el.appendChild(button_text_node);
     button_el.setAttribute("onclick", action);
+    button_el.className = "btn btn-xs btn-danger remove_entry_button";
     return button_el;
   }
 
   function create_entry(entry, entry_id) {
     var entry_div = document.createElement("div");
     entry_div.id = "entry_"+entry_id;
+    entry_div.className = "entry_row";
     var name_field = create_field("Name", entry.name, entry_id);
     var type_field = create_field("Type", entry.type, entry_id);
     var required_field = create_field("Required", entry.required, entry_id);

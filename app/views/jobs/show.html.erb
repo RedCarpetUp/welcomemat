@@ -1,8 +1,17 @@
-<h2><%= @job.name %></h2>
-<h3><%= @organisation.name %></h3>
-<p><%= @job.description %></p>
-<%= link_to 'Apply', new_organisation_job_application_path(@organisation, @job) %></br>
-<%= link_to 'Show applications', organisation_job_applications_path(@organisation, @job) %></br>
-
-<%= link_to 'Edit', edit_organisation_job_path(@organisation, @job) %> |
-<%= link_to 'Back', organisation_jobs_path %>
+<div class="overimage">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="centered-text container">
+  <h2><%= @job.name %></h2>
+  <h4><%= @organisation.name %></h4>
+  <p><%= @job.description %></p>
+  <br>
+  <%= link_to 'Apply', new_organisation_job_application_path(@organisation, @job), class: 'btn btn-success' %>
+  <br><br>
+  <% if user_signed_in? && @organisation.owner == current_user %>
+    <%= link_to 'Show applications', organisation_job_applications_path(@organisation, @job), class: 'btn btn-info' %>
+    <br><br>
+    <%= link_to 'Edit', edit_organisation_job_path(@organisation, @job), class: "btn btn-warning btn-sm" %>
+  <% end %>
+  <%= link_to 'Back', organisation_jobs_path, class: "btn btn-warning btn-sm" %>
+</div>

@@ -1,40 +1,50 @@
 <%= form_with(url: application.new_record? ? organisation_job_applications_path : organisation_job_application_path, model: application, local: true) do |form| %>
   <% if application.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(application.errors.count, "error") %> prohibited this application from being saved:</h2>
-
-      <ul>
-      <% application.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+      <h4><%= pluralize(application.errors.count, "error") %> prohibited this application from being saved:</h4>
+      <div class="alert alert-danger">
+        <ul>
+          <% application.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
-
-  <%= form.label :name %><br />
-  <%= form.text_field :name %>
+  <div class="form-group">
+    <%= form.label :name, class: "control-label" %><br />
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
   <br />
-  <%= form.label :email %><br />
-  <%= form.email_field :email %>
+  <div class="form-group">
+    <%= form.label :email, class: "control-label" %><br />
+    <%= form.email_field :email, class: "form-control" %>
+  </div>
   <br />
-  <%= form.label :description %><br />
-  <%= form.text_area :description %>
+  <div class="form-group">
+    <%= form.label :description, class: "control-label" %><br />
+    <%= form.text_area :description, class: "form-control", rows: "5" %>
+  </div>
 
   <% @job.fields["entries"].each do |entry| %>
     <br />
-    <% if entry["type"] == "text" %>
-      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
-      <%= form.text_area entry["name"], :value => application.extra_fields[entry["name"]] %>
-    <% elsif entry["type"] == "numeric" %>
-      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
-      <%= form.number_field entry["name"], :value => application.extra_fields[entry["name"]] %>
-    <% elsif entry["type"] == "date" %>
-      <%= form.label entry["name"] %><%= entry["required"] ? "*" : "" %><br />
-      <%= form.date_field entry["name"], :value => application.extra_fields[entry["name"]] %>
-    <% end %>
+    <div class="form-group">
+      <%= form.label class: "control-label" do %>
+        <span><%= entry["name"] %></span>
+        <span class="required-asterisk"><%= entry["required"] ? "*" : "" %></span>
+      <% end %>
+      <br />
+      <% if entry["type"] == "text" %>
+        <%= form.text_area entry["name"], class: "form-control", rows: "5", :value => application.extra_fields[entry["name"]] %>
+      <% elsif entry["type"] == "numeric" %>
+        <%= form.number_field entry["name"], class: "form-control", rows: "5", :value => application.extra_fields[entry["name"]] %>
+      <% elsif entry["type"] == "date" %>
+        <%= form.date_field entry["name"], class: "form-control", rows: "5", :value => application.extra_fields[entry["name"]] %>
+      <% end %>
+    </div>
   <% end %>
-
+  <br>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-success" %>
   </div>
 <% end %>
