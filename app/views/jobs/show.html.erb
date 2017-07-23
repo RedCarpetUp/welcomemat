@@ -8,8 +8,9 @@
   <br>
   <%= link_to 'Apply', new_organisation_job_application_path(@organisation, @job), class: 'btn btn-success' %>
   <br><br>
-  <% if user_signed_in? && @organisation.owner == current_user %>
+  <% if user_signed_in? && @job.collaborators.include?(current_user) %>
     <%= link_to 'Show applications', organisation_job_applications_path(@organisation, @job), class: 'btn btn-info' %>
+    <%= link_to 'Show collaborators', organisation_job_collaborators_path(@organisation, @job), class: 'btn btn-info' %>
     <br><br>
     <%= link_to 'Edit', edit_organisation_job_path(@organisation, @job), class: "btn btn-warning btn-sm" %>
   <% end %>

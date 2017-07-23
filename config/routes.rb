@@ -23,9 +23,6 @@ Rails.application.routes.draw do
     resources :jobs do
       resources :applications, only: [:show, :index, :create, :new] do
         resources :applicant_messages, only: [:create]
-        post '/applicant_messages/to_applicant', to: 'applicant_messages#create_to_applicant', as: 'applicant_messages_to_applicant'
-        post '/applicant_messages/to_collaborators', to: 'applicant_messages#create_to_collaborators', as: 'applicant_messages_to_collaborators'
-        post '/applicant_messages', to: 'applicant_messages#create'
         resources :templates, only: [:create]
         resources :extra_applicant_emails, only: [:create]
         post '/extra_applicant_emails/:id/grey', to: 'extra_applicant_emails#grey', as: 'extra_applicant_emails_grey'
@@ -33,6 +30,7 @@ Rails.application.routes.draw do
         post '/change_status/:status', to: 'applications#change_status', as: 'change_status'
         post '/move_application', to: 'applications#move_application', as: 'move_application'
       end
+      resources :collaborators, only: [:index, :create, :destroy]
     end
     post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'
   end

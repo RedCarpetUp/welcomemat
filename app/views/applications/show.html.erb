@@ -73,7 +73,7 @@
             </div>
           <% end %>
           <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
-          <trix-editor input="application_messages_appl_content_box" id="application_messages_content_box_editor" style="background-color: #fff;"></trix-editor>
+          <trix-editor input="application_messages_appl_content_box" id="application_messages_content_box_editor" style="background-color: #fff;" placeholder="You can use full liquid syntax with job, applicant and organisation as variables."></trix-editor>
           <div class="actions">
             <div class="input-group">
               <span class="input-group-addon">Use a template</span>
@@ -139,7 +139,7 @@
             </div>
             <div class="form-group">
               <%= form.hidden_field :content, :id => "template_content_box" %>
-              <trix-editor input="template_content_box" id="template_content_box_editor"></trix-editor>
+              <trix-editor input="template_content_box" id="template_content_box_editor" placeholder="You can use full liquid syntax with job, applicant and organisation as variables."></trix-editor>
             </div>
           </div>
           <div class="modal-footer">

@@ -13,6 +13,8 @@
             <%= link_to 'Show', organisation_job_path(@organisation, job), class: 'btn btn-success btn-sm' %>
             <% if user_signed_in? && job.collaborators.include?(current_user) %>
               <%= link_to 'Edit', edit_organisation_job_path(@organisation, job), class: 'btn btn-warning btn-sm' %>
+            <% end %>
+            <% if user_signed_in? && @organisation.owner == current_user %>
               <%= link_to 'Destroy', organisation_job_path(@organisation, job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
             <% end %>
           </div>

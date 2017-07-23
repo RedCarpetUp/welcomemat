@@ -2,7 +2,7 @@ class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :mail_multiple]
   before_action :set_organisation, only: [:edit, :update, :show, :index, :create, :new, :destroy, :mail_multiple]
   before_action :set_job, only: [:show, :edit, :update, :destroy, :mail_multiple]
-  before_action :require_owner, only: [:new, :create]
+  before_action :require_owner, only: [:new, :create, :delete]
   before_action :require_collaborator, only: [:edit, :update, :destroy, :mail_multiple]
 
   def show

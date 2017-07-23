@@ -1,0 +1,41 @@
+<div class="overimage small">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="container">
+  <h3>Collaborators</h3>
+  <table class="table table-bordered table-hover table-striped applicants-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collaborators.each do |collaborator| %>
+        <tr>
+          <td><%= collaborator.name %></td>
+          <td><%= collaborator.email %></td>
+          <td>
+            <% if collaborator.email != @organisation.owner.email %>
+              <%= link_to 'Remove', organisation_job_collaborator_path(@organisation, @job, collaborator.id), class: "btn btn-link btn-xs", method: :delete, data: { confirm: 'Are You Sure?' } %>
+            <% else %>
+              <em>Owner</em>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+      <td colspan="4">
+        <%= form_with(url: organisation_job_collaborators_path(@organisation, @job), local: true, class: "form-inline") do |form| %>
+          <div class="form-group">
+            <%= form.label "Add collaborator:", class: "control-label" %>
+            <%= form.email_field :email, class: "form-control input-sm", placeholder: "jane.doe@example.com" %>
+          </div>
+          <%= form.submit "Add", class: "btn btn-sm" %>
+        <% end %>
+      </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

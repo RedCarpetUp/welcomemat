@@ -69,7 +69,11 @@ table.applicants-table > thead > tr:first-child > th {
   flex-wrap: wrap;
 }
 
-.buttons-flex-box > a,input {
+.buttons-flex-box > input {
+  margin: 5px;
+}
+
+.buttons-flex-box > a {
   margin: 5px;
 }
 
