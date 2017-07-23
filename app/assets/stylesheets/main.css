@@ -62,3 +62,17 @@ table.applicants-table > thead > tr:first-child > th {
 .col-xs-12.alert.fade.in.alert-dismissible.flash {
   margin-top: 20px;
 }
+
+.buttons-flex-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.buttons-flex-box > a,input {
+  margin: 5px;
+}
+
+.modal-footer > input {
+  margin: 0px;
+}

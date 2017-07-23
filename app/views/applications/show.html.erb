@@ -1,147 +1,175 @@
-<h2><%= @job.name %></h2>
-<h3><%= @organisation.name %></h3>
-<h3><%= @application.name %></h3>
-<p><%= @application.email %></p>
-<% @application.extra_applicant_emails.each do |email| %>
-  <% if email.is_greyed %>
-    <p><strike><%= email.email %></strike></p>
-    <%= link_to "restore", organisation_job_application_extra_applicant_emails_ungrey_path(@organisation, @job, @application, email), method: "post" %>
-  <% else %>
-    <p><%= email.email %></p>
-    <%= link_to "delete", organisation_job_application_extra_applicant_emails_grey_path(@organisation, @job, @application, email), method: "post" %>
-  <% end %>
-<% end %>
-
-
-<h6>Add another email</h6>
-<%= form_with(url: organisation_job_application_extra_applicant_emails_path(@organisation, @job, @application), model: @extra_applicant_email, local: true) do |form| %>
-  <% if @extra_applicant_email.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@extra_applicant_email.errors.count, "error") %> prohibited this email from being saved:</h2>
-
-      <ul>
-      <% @extra_applicant_email.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<div class="overimage small">
+  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+</div>
+<div class="container">
+  <h2><%= @application.name %></h2>
+  <h4><%= @job.name %></h4>
+  <div class="well">
+    <p><strong><%= @application.email %></strong></p>
+    <% @application.extra_applicant_emails.each do |email| %>
+      <% if email.is_greyed %>
+        <p><strong><strike><%= email.email %></strike></strong>
+        &nbsp
+        <%= link_to "Add Back", organisation_job_application_extra_applicant_emails_ungrey_path(@organisation, @job, @application, email), method: "post", class: "btn btn-xs btn-link" %>
+        </p>
+      <% else %>
+        <p><strong><%= email.email %></strong>
+        &nbsp
+        <%= link_to "Remove", organisation_job_application_extra_applicant_emails_grey_path(@organisation, @job, @application, email), method: "post", class: "btn btn-xs btn-link" %>
+        </p>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <% end %>
 
-  <%= form.email_field :email %>
-
-  <%= form.submit %>
-<% end %>
-
-
-<p><%= @application.description %></p>
-<% @application.extra_fields.keys.each do |keyval| %>
-  <p><span style="font-weight: 600;"><%= keyval+": " %></span><%= @application.extra_fields[keyval] %></p>
-<% end %>
-
-
-<h5>Conversation</h5>
-<% @applicant_messages.each do |msg| %>
-	<div class="trix-content"><%= msg.content.html_safe %></div>
-<% end %>
-
-<h5>Send a message</h5>
-
-<h6>Send to applicant</h6>
-<%= form_with(url: organisation_job_application_applicant_messages_to_applicant_path(@organisation, @job, @application), model: @applicant_message, local: true) do |form| %>
-  <% if @applicant_message.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@applicant_message.errors.count, "error") %> prohibited this message from being sent:</h2>
-
-      <ul>
-      <% @applicant_message.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    <%= form_with(url: organisation_job_application_extra_applicant_emails_path(@organisation, @job, @application), model: @extra_applicant_email, local: true, class: "form-inline") do |form| %>
+      <% if @extra_applicant_email.errors.any? %>
+        <div id="error_explanation">
+          <h4><%= pluralize(@extra_applicant_email.errors.count, "error") %> prohibited this email from being saved:</h4>
+          <ul>
+          <% @extra_applicant_email.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
-  <trix-editor input="application_messages_appl_content_box" id="application_messages_appl_content_box_editor"></trix-editor>
-
-  <div class="actions">
-    <%= form.submit %>
-    <select onchange="fill_applicant_message_box(this.value)">
-      <option value="None">None</option>
-      <% @organisation.templates.each do |template| %>
-        <option value=<%= template.name %>><%= template.name %></option>
-      <% end %>
-    </select>
+      <div class="form-group">
+        <%= form.email_field :email, class: "form-control input-sm", placeholder: "jane.doe@example.com" %>
+      </div>
+      <%= form.submit "Add", class: "btn btn-default btn-sm" %>
+    <% end %>
   </div>
-<% end %>
 
-<h6>Send to collaborators</h6>
-<%= form_with(url: organisation_job_application_applicant_messages_to_collaborators_path(@organisation, @job, @application), model: @applicant_message, local: true) do |form| %>
-  <% if @applicant_message.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@applicant_message.errors.count, "error") %> prohibited this message from being sent:</h2>
+  <h3>Details</h3>
+  <p><%= @application.description %></p>
+  <br>
+  <% @application.extra_fields.keys.each do |keyval| %>
+    <p><span style="font-weight: 600;"><%= keyval+": " %></span></p>
+    <p><%= @application.extra_fields[keyval] %></p>
+    <br>
+  <% end %>
 
-      <ul>
-      <% @applicant_message.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Conversation</h3>
+      <div class="well" style="margin-bottom: 0px;">
+        <% @applicant_messages.each do |msg| %>
+          <div class="">
+            <strong><%= msg.user.name %></strong>
+            &nbsp
+            <small><%= time_ago_in_words(msg.created_at)+" ago" %></small>
+            <small><mark><%= msg.from_applicant == nil ? "" : msg.from_applicant == true ? " < Reply from applicant" : " > Sent to applicant" %></mark></small>
+          </div>
+        	<div class="trix-content"><%= msg.content.html_safe %></div>
+          <br>
+        <% end %>
+        <%= form_with(url: organisation_job_application_applicant_messages_path(@organisation, @job, @application), model: @applicant_message, local: true) do |form| %>
+          <% if @applicant_message.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@applicant_message.errors.count, "error") %> prohibited this message from being sent:</h2>
+              <ul>
+                <% @applicant_message.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <%= form.hidden_field :content, :id => "application_messages_appl_content_box" %>
+          <trix-editor input="application_messages_appl_content_box" id="application_messages_content_box_editor" style="background-color: #fff;"></trix-editor>
+          <div class="actions">
+            <div class="input-group">
+              <span class="input-group-addon">Use a template</span>
+              <select onchange="fill_applicant_message_box(this.value)" class="form-control">
+                <option value="None">None</option>
+                <% @organisation.templates.each do |template| %>
+                  <option value=<%= template.id %>><%= template.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <br>
+            <div class="buttons-flex-box">
+              <%= form.submit "Send to Applicant", class: "btn btn-success", name: "applicant" %>
+              <%= form.submit "Send to Collaborators", class: "btn btn-success", name: "collaborator" %>
+              <input type="submit" id="save_template_button" class="btn btn-info" value="Save as Template" data-toggle="modal" data-target="#template_save_modal">
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <%= form.hidden_field :content, :id => "application_messages_coll_content_box" %>
-  <trix-editor input="application_messages_coll_content_box" id="application_messages_coll_content_box_editor"></trix-editor>
-
-  <div class="actions">
-    <%= form.submit %>
+    <% if @application.status != "Moved Out" %>
+      <div class="col-md-4" style="margin-bottom: 5px;">
+        <h3>Actions</h3>
+        <div class="well">
+          <h4>Status: <strong><%= @application.status %></strong></h4>
+          <% ["Shortlisted", "Applied", "Rejected", "Hired"].delete_if{|i|i==@application.status}.each do |status| %>
+            <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post, class: "btn btn-sm btn-default" %>
+          <% end %>
+          <h4>Move application</h4>  
+          <%= form_with(url: organisation_job_application_move_application_path(@organisation, @job, @application), local: true, class: "form-inline") do |form| %>
+            <div class="form-group">
+              <%= form.select :new_job_id, @organisation.jobs.where.not(id: @job.id).collect { |p| [ p.name, p.id ] }, {}, {class: "form-control input-sm"} %>
+              <%= form.submit class: "btn btn-sm btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
 
-<h6>Save a template</h6>
-<%= form_with(url: organisation_job_application_templates_path(@organisation, @job, @application), model: @template, local: true) do |form| %>
-  <% if @template.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@template.errors.count, "error") %> prohibited this template from being saved:</h2>
-
-      <ul>
-      <% @template.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <div class="modal fade" id="template_save_modal" tabindex="-1" role="dialog" aria-labelledby="template_save_modal_label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="template_save_modal_label">Save as template</h4>
+        </div>
+        <%= form_with(url: organisation_job_application_templates_path(@organisation, @job, @application), model: @template, local: true) do |form| %>
+          <div class="modal-body">
+            <% if @template.errors.any? %>
+              <div id="error_explanation">
+                <h4><%= pluralize(@template.errors.count, "error") %> prohibited this template from being saved:</h4>
+                <ul>
+                  <% @template.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <div class="form-group">
+              <%= form.label :name, class: "control-label" %>
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+            <div class="form-group">
+              <%= form.hidden_field :content, :id => "template_content_box" %>
+              <trix-editor input="template_content_box" id="template_content_box_editor"></trix-editor>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= form.submit "Save", class: "btn btn-success" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <%= form.label :name %><br />
-  <%= form.text_field :name %>
-
-  <%= form.hidden_field :content, :id => "template_content_box" %>
-  <trix-editor input="template_content_box" id="template_content_box_editor"></trix-editor>
-
-  <div class="actions">
-    <%= form.submit %>
   </div>
-<% end %>
 
-<% if @application.status != "Moved Out" %>
-  <h5>Status: <%= @application.status %></h5>
-  <% ["Shortlisted", "Applied", "Rejected", "Hired"].delete_if{|i|i==@application.status}.each do |status| %>
-    <%= link_to status, organisation_job_application_change_status_path(@organisation, @job, @application, status: status), method: :post %>
-  <% end %>
-
-  <h6>Move application</h6>
-  <%= form_with(url: organisation_job_application_move_application_path(@organisation, @job, @application), local: true) do |form| %>
-    <%= form.select :new_job_id, @organisation.jobs.where.not(id: @job.id).collect { |p| [ p.name, p.id ] } %>
-    <%= form.submit %>
-  <% end %>
-<% end %>
+</div>
 
 <script>
-function fill_applicant_message_box(value) {
   var templates_mapping = {
     <% @organisation.templates.each do |template| %>
-      "<%= template.name %>": "<%= template.content.html_safe %>",
+      "<%= template.id %>": "<%= template.content.html_safe %>",
     <% end %>
     "None":""
+  };
+  function fill_applicant_message_box(value) {
+    document.getElementById("application_messages_content_box_editor").editor.loadHTML(templates_mapping[value]);
   }
-  document.getElementById("application_messages_appl_content_box_editor").editor.loadHTML(templates_mapping[value]);
-}
+  var template_modal_button = document.getElementById("save_template_button");
+  template_modal_button.onclick = function(e) {
+    e.preventDefault();
+    var target_editor = document.getElementById("template_content_box_editor");
+    var source_editor = document.getElementById("application_messages_content_box_editor");
+    if(target_editor.value === "") {
+      target_editor.editor.loadHTML(source_editor.value);
+    }
+  };
 </script>

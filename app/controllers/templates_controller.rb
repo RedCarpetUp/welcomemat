@@ -25,6 +25,7 @@ class TemplatesController < ApplicationController
         flash[:error] = "Template saving failed!"
         @applicant_messages = @application.applicant_messages
         @applicant_message = ApplicantMessage.new
+        @extra_applicant_email = ExtraApplicantEmail.new
         render 'applications/show'
       end
     end
