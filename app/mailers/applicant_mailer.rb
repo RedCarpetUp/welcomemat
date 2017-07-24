@@ -99,4 +99,20 @@ class ApplicantMailer < ActionMailer::Base
     mail(from: @reply_mail, to: @coll.email, subject: '('+@application.hashid+')New message from applicant '+@application.name+' to your job '+@job.name)
   end
 
+  def added_collab_message(new_coll, coll, job)
+    @job = job
+    @coll = coll
+    @new_coll = new_coll
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    mail(from: "dontreply@wm-mail.hackergully.com", to: @coll.email, subject: @coll == @new_coll ? "You have been added as collaborator to job "+@job.name+" of "+@job.organisation.name : @new_coll.name+" has been added as collaborator to job "+@job.name+" of "+@job.organisation.name)
+  end
+
+  def removed_collab_message(old_coll, coll, job)
+    @job = job
+    @coll = coll
+    @old_coll = old_coll
+    @job_url = "https://welcomemat-hackergully-com.herokuapp.com/organisations/"+@job.organisation.id.to_s+"/jobs/"+@job.id.to_s
+    mail(from: "dontreply@wm-mail.hackergully.com", to: @coll.email, subject: @coll == @old_coll ? "You have been removed as collaborator from job "+@job.name+" of "+@job.organisation.name : @old_coll.name+" has been removed as collaborator from job "+@job.name+" of "+@job.organisation.name)
+  end
+
 end

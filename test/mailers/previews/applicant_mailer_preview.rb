@@ -36,4 +36,12 @@ class NotificationMailerPreview < ActionMailer::Preview
     ApplicantMailer.recruiter_status_change_notify_collaborators(User.first, Job.first, Application.first, User.second)
   end
 
+  def added_collab_message
+    ApplicantMailer.added_collab_message(User.first, User.second, Job.first)
+  end
+
+  def removed_collab_message
+    ApplicantMailer.removed_collab_message(User.first, User.second, Job.first)
+  end
+
 end

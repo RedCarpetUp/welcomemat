@@ -18,6 +18,10 @@ class CollaboratorsController < ApplicationController
 
     @job.collaborators.delete(@user)
     flash[:success] = 'Collaborator Removed'
+    ApplicantMailer.removed_collab_message(@user, @user, @job).deliver_later
+    @job.collaborators.each do |coll|
+      ApplicantMailer.removed_collab_message(@user, coll, @job).deliver_later
+    end
     redirect_to organisation_job_collaborators_path(@organisation, @job)
   end
 
@@ -42,6 +46,9 @@ class CollaboratorsController < ApplicationController
     @job.collaborators << @user
     if @job.collaborators.include?(@user)
       flash[:success] = "Collaborator added successfully"
+      @job.collaborators.each do |coll|
+        ApplicantMailer.added_collab_message(@user, coll, @job).deliver_later
+      end
     else
       flash[:error] = "Collaborator adding failed"
     end
@@ -60,7 +67,7 @@ class CollaboratorsController < ApplicationController
 
   def require_collaborators
     if !@organisation.jobs.collect{|x| x.collaborators}.flatten.uniq.include?(current_user)
-      flash[:danger] = 'You can only create templates for organisations you collaborate for'
+      flash[:danger] = 'You can change this for jobs you collaborate for'
       redirect_to organisation_path(@organisation)
     end
   end

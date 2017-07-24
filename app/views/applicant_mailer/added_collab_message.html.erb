@@ -1,0 +1,5 @@
+<%= @new_coll.id == @coll.id ? "You have" : @new_coll.name+" has" %> been added as a collaborator to job <strong><%= @job.name %></strong> for <%= @job.organisation.name %>.
+<br>
+<%= @new_coll == @coll ? "You " : @new_coll.name %> can now participate in conversations regarding any applicant to this job and can parrticipate in hiring process.
+<br>
+<a href="<%= @job_url %>">View job</a>
