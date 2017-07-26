@@ -1,5 +1,7 @@
 class Application < ActiveRecord::Base
   acts_as_paranoid
+  include PgSearch
+  pg_search_scope :search_by_details, :against => [:name, :description, :email]
   include Hashid::Rails
   belongs_to :job
   has_many :applicant_messages

@@ -5,7 +5,7 @@ class ApplicationsController < ApplicationController
   before_action :set_application, only: [:show]
   before_action :require_collaborators, only: [:show, :index, :change_status, :move_application]
 
-  ITEMS_PER_PAGE = 10
+  ITEMS_PER_PAGE = 5
 
   def move_application
     @application = Application.find(params[:application_id])
@@ -79,12 +79,19 @@ class ApplicationsController < ApplicationController
       @page = 1
     end
     @applications = @job.applications
+    if params[:query]
+      @applications = @applications
+    end
     if params[:filter] && params[:filter] == "status"
       if params[:status]
         @applications = @applications.where(status: params[:status])
       end
     end
-    @show_more = !(@page == (@applications.count.to_f/ITEMS_PER_PAGE).ceil)
+    if @applications.empty?
+      @show_more = false
+    else
+      @show_more = !(@page == (@applications.count.to_f/ITEMS_PER_PAGE).ceil)
+    end
     @applications = @applications.offset((@page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
     @cur_url = organisation_job_applications_path
   end
