@@ -60,7 +60,8 @@ table.applicants-table > thead > tr:first-child > th {
 }
 
 .col-xs-12.alert.fade.in.alert-dismissible.flash {
-  margin-top: 20px;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 .buttons-flex-box {
