@@ -1,5 +1,6 @@
 class EmailinController < ApplicationController
   skip_before_action :verify_authenticity_token
+
   def index
     logger.debug params
     if params[:key] == Rails.application.secrets.auth0_hook_key
@@ -54,6 +55,12 @@ class EmailinController < ApplicationController
           end
         end
     end
+  end
+
+  def delivery
+    logger.debug "XXXXXXXXXXXXXXXX"
+    logger.debug params
+    logger.debug "XXXXXXXXXXXXXXXX"
   end
 
 end

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   post '/emailin', to: 'emailin#index'
+  post '/email_delivery', to: 'emailin#delivery'
   devise_for :users
   #namespace :api, defaults: {format: :json} do
   #  namespace :v1 do

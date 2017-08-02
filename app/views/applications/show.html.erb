@@ -1,9 +1,9 @@
 <div class="overimage small">
-  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+  <div class="container">
+    <h2><%= @application.name %></h2>
+  </div>
 </div>
 <div class="container">
-  <h2><%= @application.name %></h2>
-  <h4><%= @job.name %></h4>
   <div class="well">
     <p><strong><%= @application.email %></strong></p>
     <% @application.extra_applicant_emails.each do |email| %>
@@ -39,7 +39,7 @@
   </div>
 
   <h3>Details</h3>
-  <p><%= @application.description %></p>
+  <div class="trix-content"><%= @application.description.html_safe %></div>
   <br>
   <% @application.extra_fields.keys.each do |keyval| %>
     <p><span style="font-weight: 600;"><%= keyval+": " %></span></p>

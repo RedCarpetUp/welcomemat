@@ -1,10 +1,11 @@
 <div class="overimage">
-  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+  <div class="container" style="align-items: center;">
+    <h2><%= @job.name %></h2>
+  </div>
 </div>
 <div class="centered-text container">
-  <h2><%= @job.name %></h2>
   <h4><%= @organisation.name %></h4>
-  <p><%= @job.description %></p>
+  <div class="trix-content"><%= @job.description.html_safe %></div>
   <br>
   <%= link_to 'Apply', new_organisation_job_application_path(@organisation, @job), class: 'btn btn-success' %>
   <br><br>

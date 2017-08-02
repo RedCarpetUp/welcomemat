@@ -1,8 +1,9 @@
 <div class="overimage small">
-  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+  <div class="container">
+    <h2><%= @job.name+" applications" %></h2>
+  </div>
 </div>
 <div class="container">
-  <h3><%= @job.name+" applications" %></h3>
   <%= form_tag organisation_job_applications_path(@organisation, @job), method: :get, class: "form-inline", style: "margin-bottom: 10px;" do %>
     <div class="input-group">
       <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Search applicants..." %>

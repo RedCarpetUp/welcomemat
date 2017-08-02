@@ -18,7 +18,8 @@
   <br>
   <div class="form-group">
     <%= form.label :description, class: "control-label" %><br />
-    <%= form.text_area :description, class: "form-control", rows: "5" %>
+    <%= form.hidden_field :description, :id => "organisation_description_box" %>
+    <trix-editor input="organisation_description_box"></trix-editor>
   </div>
   <br>
   <div class="actions">

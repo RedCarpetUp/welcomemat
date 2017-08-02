@@ -23,7 +23,8 @@
   <br />
   <div class="form-group">
     <%= form.label :description, class: "control-label" %><br />
-    <%= form.text_area :description, class: "form-control", rows: "5" %>
+    <%= form.hidden_field :description, :id => "application_description_box" %>
+    <trix-editor input="application_description_box"></trix-editor>
   </div>
 
   <% @job.fields["entries"].each do |entry| %>

@@ -1,9 +1,10 @@
 <div class="overimage">
-  <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
+  <div class="container">
+    <h2><%= @organisation.name %></h2>
+  </div>
 </div>
 <div class="container">
-  <h2><%= @organisation.name %></h2>
-  <p><%= @organisation.description %></p>
+  <div class="trix-content"><%= @organisation.description.html_safe %></div>
   <h3>Jobs</h3>
   <br>
   <div class="container">
