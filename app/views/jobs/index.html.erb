@@ -2,7 +2,9 @@
   <img class="img-responsive" src="https://c1.staticflickr.com/6/5570/14983596198_8344036300_b.jpg"/>
 </div>
 <div class="container">
-  <h2><%= @organisation.name+" jobs" %></h2>
+  <h2><%= @organisation.name %></h2>
+  <p><%= @organisation.description %></p>
+  <h3>Jobs</h3>
   <br>
   <div class="container">
     <% @jobs.each do |job| %>
@@ -25,5 +27,7 @@
   <% if user_signed_in? && @organisation.owner == current_user %>
       <br>
       <%= link_to 'New job', new_organisation_job_path, class: "btn btn-warning btn-sm" %>
+      <%= link_to 'Edit', edit_organisation_path(@organisation), class: "btn btn-warning btn-sm" %>
   <% end %>
+  <%= link_to 'Back', organisations_path, class: "btn btn-warning btn-sm" %>
 </div>

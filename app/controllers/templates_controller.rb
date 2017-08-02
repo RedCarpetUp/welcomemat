@@ -34,7 +34,7 @@ class TemplatesController < ApplicationController
   private
 
   def set_organisation
-    @organisation = Organisation.find(params[:organisation_id])
+    @organisation = Organisation.find(hashid_from_param(params[:organisation_id]))
   end
 
   def set_application
@@ -42,7 +42,7 @@ class TemplatesController < ApplicationController
   end
 
   def set_job
-    @job = Job.find(params[:job_id])
+    @job = Job.find(hashid_from_param(params[:job_id]))
   end
 
   def require_collaborators

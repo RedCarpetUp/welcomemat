@@ -1,11 +1,16 @@
 class Job < ActiveRecord::Base
   acts_as_paranoid
+  include Hashid::Rails
   belongs_to :organisation
   has_many :applications, dependent: :destroy
   has_and_belongs_to_many :collaborators, :join_table => :jobs_collaborators, foreign_key: "collaborator_id", class_name: "User", association_foreign_key: "job_id"
   validates :name, presence: true, length: { minimum: 1, maximum: 40 }
   validates :description, presence: true, length: { minimum: 5, maximum: 1000 }
   validate :each_item_in_fields
+
+  def to_param
+    [name.parameterize, hashid].join("-")
+  end
 
   def each_item_in_fields
     invalid_format = false

@@ -1,10 +1,7 @@
 class OrganisationsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_organisation, only: [:show, :edit, :update, :destroy]
+  before_action :set_organisation, only: [:edit, :update, :destroy]
   before_action :require_owner, only: [:edit, :update, :destroy]
-
-  def show
-  end
 
   def index
     @organisations = Organisation.all
@@ -20,7 +17,7 @@ class OrganisationsController < ApplicationController
 
     if @organisation.save
       flash[:success] = "Organisation Created!"
-      redirect_to organisation_path(@organisation)
+      redirect_to organisation_jobs_path(@organisation)
     else
       render :new
     end
@@ -32,14 +29,14 @@ class OrganisationsController < ApplicationController
   def update
     if @organisation.update(organisation_params)
       flash[:success] = 'Updated Successfully!'
-      redirect_to organisation_path(@organisation)
+      redirect_to organisation_jobs_path(@organisation)
     else
       render :edit
     end
   end
 
   def destroy
-    Organisation.find(params[:id]).destroy
+    Organisation.find(hashid_from_param(params[:id])).destroy
     flash[:success] = 'Organisation Deleted'
     redirect_to root_path
   end
@@ -47,7 +44,7 @@ class OrganisationsController < ApplicationController
   private
 
   def set_organisation
-    @organisation = Organisation.find(params[:id])
+    @organisation = Organisation.find(hashid_from_param(params[:id]))
   end
 
   def require_owner

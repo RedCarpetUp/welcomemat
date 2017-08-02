@@ -109,7 +109,7 @@ class JobsController < ApplicationController
   end
 
   def destroy
-    Job.find(params[:id]).destroy
+    Job.find(hashid_from_param(params[:id])).destroy
     flash[:success] = 'Job Deleted'
     redirect_to organisation_jobs_path(@organisation)
   end
@@ -117,11 +117,11 @@ class JobsController < ApplicationController
   private
 
   def set_job
-    @job = Job.find(params[:id])
+    @job = Job.find(hashid_from_param(params[:id]))
   end
 
   def set_organisation
-    @organisation = Organisation.find(params[:organisation_id])
+    @organisation = Organisation.find(hashid_from_param(params[:organisation_id]))
   end
 
   def require_collaborator

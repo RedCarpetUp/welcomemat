@@ -5,8 +5,8 @@ Hashid::Rails.configure do |config|
   # The minimum length of generated hashids
   config.min_hash_length = 6
 
-  #config.alphabet = "abcdefghijklmnopqrstuvwxyz" \
-  #                  "1234567890"
+  config.alphabet = "abcdefghijklmnopqrstuvwxyz" \
+                    "1234567890"
 
   # Whether to override the `find` method
   config.override_find = true

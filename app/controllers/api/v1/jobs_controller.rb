@@ -80,7 +80,7 @@ module Api
 
       def set_job
         begin
-          @job = Job.find(params[:id])
+          @job = Job.find(hashid_from_param(params[:id]))
         rescue
           render status: :not_found, json: { errors: ["Not Found."] }
         end

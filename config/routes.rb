@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   #  get 'dashboard/*other', to: 'dashboard#index'
   #end
   root to: "organisations#index"
-  resources :organisations do
+  resources :o, :controller => :organisations, :as => :organisations, except: [:show] do
     resources :jobs do
       resources :applications, only: [:show, :index, :create, :new] do
         resources :applicant_messages, only: [:create]

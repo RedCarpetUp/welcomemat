@@ -9,7 +9,7 @@
       <div class="well card">
         <h3><%= organisation.name %></h3>
         <h4><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> <%= organisation.jobs.count %> jobs</h4>
-        <%= link_to 'Show', organisation, class: "btn btn-primary" %>
+        <%= link_to 'Show', organisation_jobs_path(organisation), class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
