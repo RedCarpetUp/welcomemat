@@ -25,3 +25,5 @@
 /node_modules
 
 dump.rdb
+
+.env
