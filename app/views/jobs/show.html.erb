@@ -13,7 +13,10 @@
     <%= link_to 'Show applications', organisation_job_applications_path(@organisation, @job), class: 'btn btn-info' %>
     <%= link_to 'Show collaborators', organisation_job_collaborators_path(@organisation, @job), class: 'btn btn-info' %>
     <br><br>
-    <%= link_to 'Edit', edit_organisation_job_path(@organisation, @job), class: "btn btn-warning btn-sm" %>
+    <%= link_to 'Edit Job', edit_organisation_job_path(@organisation, @job), class: "btn btn-warning btn-sm" %>
+    <%= link_to 'Clone Job', organisation_job_clone_path(@organisation, @job), class: "btn btn-info btn-sm" %>
+    <%= link_to 'Destroy', organisation_job_path(@organisation, @job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+    <br><br>
   <% end %>
   <%= link_to 'Back', organisation_jobs_path, class: "btn btn-warning btn-sm" %>
 </div>

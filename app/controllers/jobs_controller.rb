@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :mail_multiple]
   before_action :set_organisation, only: [:edit, :update, :show, :index, :create, :new, :destroy, :mail_multiple]
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :mail_multiple]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :mail_multiple, :clone]
   before_action :require_owner, only: [:new, :create, :delete]
   before_action :require_collaborator, only: [:edit, :update, :destroy, :mail_multiple]
 
@@ -76,6 +76,10 @@ class JobsController < ApplicationController
 
   def index
     @jobs = @organisation.jobs
+  end
+
+  def clone
+    flash[:notice] = "Make any changes to details if needed and save"
   end
 
   def new

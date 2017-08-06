@@ -1,6 +1,6 @@
 <div class="container">
-  <h2>Post new job</h2>
-  <%= render 'form', job: @job, clone: false %>
+  <h2>Clone job</h2>
+  <%= render 'form', job: @job, clone: true %>
   <br>
   <%= link_to 'Back', organisation_jobs_path, class: "btn btn-success btn-sm" %>
 </div>

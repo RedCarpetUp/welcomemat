@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       end
       resources :collaborators, only: [:index, :create, :destroy]
     end
+    get '/jobs/:id/clone', to: 'jobs#clone', as: 'job_clone'
     post '/jobs/:id/mail_multiple', to: 'jobs#mail_multiple', as: 'job_mail_multiple'
   end
 
